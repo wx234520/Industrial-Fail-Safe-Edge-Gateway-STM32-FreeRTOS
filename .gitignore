@@ -1,0 +1,19 @@
+# build
+*.o
+*.d
+*.axf
+*.map
+*.lst
+*.elf
+
+# keil build folder
+Project/MDK-ARM/Objects/
+Project/MDK-ARM/Listings/
+Project/MDK-ARM/Debug/
+
+# keil temp
+*.uvguix.*
+*.log
+
+# vscode
+.vscode/
