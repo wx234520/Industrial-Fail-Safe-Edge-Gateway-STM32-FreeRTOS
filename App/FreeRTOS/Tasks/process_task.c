@@ -3,6 +3,7 @@
 #include "queue.h"
 #include "typedefs.h"
 #include "sensor_service.h"
+#include "watchdog_service.h"
 
 static system_data_t g_process_data;
 

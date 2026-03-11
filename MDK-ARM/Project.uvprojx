@@ -187,7 +187,7 @@
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -311,7 +311,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../Drivers/MCU-F103;../Service;../App/FreeRTOS/Tasks;../Config</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../Drivers/MCU-F103;../Service;../App/FreeRTOS/Tasks;../Config;..\Net\Device</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1163,7 +1163,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Drivers/MCU-F103</GroupName>
+          <GroupName>Drivers/Bsp</GroupName>
           <Files>
             <File>
               <FileName>driver_timer.c</FileName>
@@ -1314,6 +1314,31 @@
               <FileName>watchdog_task.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\App\FreeRTOS\Tasks\watchdog_task.h</FilePath>
+            </File>
+            <File>
+              <FileName>comm_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\FreeRTOS\Tasks\comm_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>comm_task.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\App\FreeRTOS\Tasks\comm_task.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/Net</GroupName>
+          <Files>
+            <File>
+              <FileName>esp8266.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Net\Device\esp8266.c</FilePath>
+            </File>
+            <File>
+              <FileName>esp8266.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Net\Device\esp8266.h</FilePath>
             </File>
           </Files>
         </Group>

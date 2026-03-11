@@ -54,7 +54,9 @@
 "project\process_task.o"
 "project\safety_task.o"
 "project\watchdog_task.o"
---strict --scatter "Project\Project.sct"
+"project\comm_task.o"
+"project\esp8266.o"
+--library_type=microlib --strict --scatter "Project\Project.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "Project.map" -o Project\Project.axf

@@ -35,6 +35,8 @@
 #include "display_task.h"
 #include "watchdog_task.h"
 #include "safety_task.h"
+#include "comm_task.h"
+#include "semphr.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,6 +51,7 @@
 #define PRIO_SAFETY      osPriorityAboveNormal
 #define PRIO_WATCHDOG    osPriorityAboveNormal
 #define PRIO_DISPLAY     osPriorityNormal
+#define PRIO_COMM        osPriorityNormal
 #define PRIO_LOG         osPriorityLow
 /* USER CODE END PD */
 
@@ -61,6 +64,8 @@
 /* USER CODE BEGIN Variables */
 QueueHandle_t DisplayQueue;
 QueueHandle_t SafeQueue;
+SemaphoreHandle_t esp_rx_semaphore;
+SemaphoreHandle_t esp_buf_mutex;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -107,6 +112,8 @@ void MX_FREERTOS_Init(void) {
   /* add queues, ... */
   SafeQueue = xQueueCreate(1, sizeof(system_data_t));
   DisplayQueue = xQueueCreate(1, sizeof(system_data_t));
+  esp_rx_semaphore = xSemaphoreCreateBinary();
+  esp_buf_mutex = xSemaphoreCreateMutex();
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -119,7 +126,8 @@ void MX_FREERTOS_Init(void) {
   xTaskCreate(ProcessTask, "ProcessTask", 128, NULL, PRIO_PROCESS, NULL);
   xTaskCreate(DisplayTask, "DisplayTask", 128, NULL, PRIO_DISPLAY, NULL);
   xTaskCreate(SafetyTask, "SafetyTask", 128, NULL, PRIO_SAFETY, NULL);
-  xTaskCreate(WatchdogTask, "WatchdogTask", 128,NULL, PRIO_WATCHDOG,NULL);
+  xTaskCreate(WatchdogTask, "WatchdogTask", 128, NULL, PRIO_WATCHDOG,NULL);
+  xTaskCreate(CommTask, "CommTask", 512, NULL, PRIO_COMM, NULL);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */

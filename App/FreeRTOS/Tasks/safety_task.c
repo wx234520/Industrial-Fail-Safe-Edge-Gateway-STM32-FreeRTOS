@@ -3,6 +3,7 @@
 #include "typedefs.h"
 #include "queue.h"
 #include "safety_service.h"
+#include "watchdog_service.h"
 
 extern QueueHandle_t SafeQueue;
 extern QueueHandle_t DisplayQueue;
