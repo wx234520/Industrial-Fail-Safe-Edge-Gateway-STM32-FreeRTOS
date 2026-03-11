@@ -56,6 +56,11 @@
 "project\watchdog_task.o"
 "project\comm_task.o"
 "project\esp8266.o"
+"project\mqttkit.o"
+"project\cjson.o"
+"project\base64.o"
+"project\hmac_sha1.o"
+"project\onenet.o"
 --library_type=microlib --strict --scatter "Project\Project.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

@@ -64,6 +64,7 @@
 /* USER CODE BEGIN Variables */
 QueueHandle_t DisplayQueue;
 QueueHandle_t SafeQueue;
+QueueHandle_t CommQueue;
 SemaphoreHandle_t esp_rx_semaphore;
 SemaphoreHandle_t esp_buf_mutex;
 /* USER CODE END Variables */
@@ -112,6 +113,7 @@ void MX_FREERTOS_Init(void) {
   /* add queues, ... */
   SafeQueue = xQueueCreate(1, sizeof(system_data_t));
   DisplayQueue = xQueueCreate(1, sizeof(system_data_t));
+  CommQueue = xQueueCreate(1,sizeof(system_data_t));
   esp_rx_semaphore = xSemaphoreCreateBinary();
   esp_buf_mutex = xSemaphoreCreateMutex();
   /* USER CODE END RTOS_QUEUES */
@@ -127,7 +129,7 @@ void MX_FREERTOS_Init(void) {
   xTaskCreate(DisplayTask, "DisplayTask", 128, NULL, PRIO_DISPLAY, NULL);
   xTaskCreate(SafetyTask, "SafetyTask", 128, NULL, PRIO_SAFETY, NULL);
   xTaskCreate(WatchdogTask, "WatchdogTask", 128, NULL, PRIO_WATCHDOG,NULL);
-  xTaskCreate(CommTask, "CommTask", 512, NULL, PRIO_COMM, NULL);
+  xTaskCreate(CommTask, "CommTask", 1024, NULL, PRIO_COMM, NULL);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */

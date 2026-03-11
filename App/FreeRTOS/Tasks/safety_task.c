@@ -7,6 +7,7 @@
 
 extern QueueHandle_t SafeQueue;
 extern QueueHandle_t DisplayQueue;
+extern QueueHandle_t CommQueue;
 
 void SafetyTask(void *argument)
 {
@@ -20,6 +21,7 @@ void SafetyTask(void *argument)
         {        
             safety_data.system_state = WarningProcess(&safety_data);
             xQueueOverwrite(DisplayQueue,&safety_data);
+            xQueueOverwrite(CommQueue,&safety_data);
 
             heartbeat_counter = 0; // Reset heartbeat counter on successful data reception
             last_heartbeat = xTaskGetTickCount(); // Update last heartbeat time

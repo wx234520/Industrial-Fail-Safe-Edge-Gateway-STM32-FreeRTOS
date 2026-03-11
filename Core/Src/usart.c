@@ -27,9 +27,9 @@
 #include "semphr.h"
 #pragma import(__use_no_semihosting)
 
-uint8_t dma_rx_buf[256];  // DMA 缓冲
+uint8_t dma_rx_buf[512];  // DMA 缓冲
 
-extern uint8_t esp8266_buf[256];
+extern uint8_t esp8266_buf[512];
 extern SemaphoreHandle_t esp_rx_semaphore;
 
 struct __FILE
@@ -150,7 +150,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     hdma_usart1_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
     hdma_usart1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
     hdma_usart1_rx.Init.Mode = DMA_CIRCULAR;
-    hdma_usart1_rx.Init.Priority = DMA_PRIORITY_LOW;
+    hdma_usart1_rx.Init.Priority = DMA_PRIORITY_MEDIUM;
     if (HAL_DMA_Init(&hdma_usart1_rx) != HAL_OK)
     {
       Error_Handler();

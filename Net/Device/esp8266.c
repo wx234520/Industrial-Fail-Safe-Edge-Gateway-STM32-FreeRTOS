@@ -15,7 +15,7 @@
 extern SemaphoreHandle_t esp_rx_semaphore;
 extern SemaphoreHandle_t esp_buf_mutex;
 
-uint8_t esp8266_buf[256];
+uint8_t esp8266_buf[512];
 uint16_t esp8266_cnt = 0, esp8266_cntPre = 0;
 
 
@@ -80,7 +80,7 @@ _Bool ESP8266_SendCmd(char *cmd, char *res)
 	
 	HAL_UART_Transmit(&huart1,(uint8_t*)cmd,strlen(cmd),500);
 
-    uint8_t timeOut = 50;
+    static uint8_t timeOut = 50;
 
     while(timeOut--)
     {
@@ -190,6 +190,12 @@ unsigned char *ESP8266_GetIPD(unsigned short timeOut)
 //==========================================================
 void ESP8266_Init(void)
 {
+	// printf("RESET ESP8266\r\n");
+
+    // HAL_UART_Transmit(&huart1,(uint8_t*)"AT+RST\r\n",8,500);
+
+    // vTaskDelay(pdMS_TO_TICKS(5000));
+	
 	ESP8266_Clear();
 	
 	printf("1. AT\r\n"); 
@@ -199,16 +205,19 @@ void ESP8266_Init(void)
 	printf("2. CWMODE\r\n");
 	while(ESP8266_SendCmd("AT+CWMODE=1\r\n", "OK"))
 	vTaskDelay(pdMS_TO_TICKS(500));
+
+	printf("3. CIPMUX\r\n");
+	while(ESP8266_SendCmd("AT+CIPMUX=0\r\n","OK"))
+    vTaskDelay(pdMS_TO_TICKS(500));
 	
-	printf("3. AT+CWDHCP\r\n");
+	printf("4. AT+CWDHCP\r\n");
 	while(ESP8266_SendCmd("AT+CWDHCP=1,1\r\n", "OK"))
 	vTaskDelay(pdMS_TO_TICKS(500));
 	
-	printf("4. CWJAP\r\n");
+	printf("5. CWJAP\r\n");
 	while(ESP8266_SendCmd(ESP8266_WIFI_INFO, "GOT IP"))
-	vTaskDelay(pdMS_TO_TICKS(500));
+	vTaskDelay(pdMS_TO_TICKS(2000));
 	
-	printf("5. ESP8266 Init OK\r\n");
-	vTaskDelay(pdMS_TO_TICKS(500));
-
+	printf("ESP8266 Init OK\r\n");
+	vTaskDelay(pdMS_TO_TICKS(3000));
 }

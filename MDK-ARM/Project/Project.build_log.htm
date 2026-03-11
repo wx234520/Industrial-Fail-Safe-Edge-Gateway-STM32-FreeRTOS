@@ -22,16 +22,21 @@ Dialog DLL:      TCM.DLL V1.32.0.0
  
 <h2>Project:</h2>
 e:\EmbeddedSystem\Industrial Fail-Safe Edge Gateway (STM32 + FreeRTOS)\Project\MDK-ARM\Project.uvprojx
-Project File Date:  03/10/2026
+Project File Date:  03/11/2026
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'E:\EmbeddedSystem\Keil5\ARM\ARMCC\Bin'
 Build target 'Project'
-compiling esp8266.c...
+assembling startup_stm32f103xb.s...
+compiling gpio.c...
+compiling comm_task.c...
+..\App\FreeRTOS\Tasks\comm_task.c(17): warning:  #177-D: variable "comm_data"  was declared but never referenced
+  static system_data_t comm_data;
+..\App\FreeRTOS\Tasks\comm_task.c: 1 warning, 0 errors
 linking...
-Program Size: Code=27412 RO-data=3928 RW-data=212 ZI-data=13492  
+Program Size: Code=36184 RO-data=4192 RW-data=224 ZI-data=16512  
 FromELF: creating hex file...
-"Project\Project.axf" - 0 Error(s), 0 Warning(s).
+"Project\Project.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -54,7 +59,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

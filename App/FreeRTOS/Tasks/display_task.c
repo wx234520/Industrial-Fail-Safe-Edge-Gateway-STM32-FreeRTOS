@@ -7,11 +7,10 @@
 #include "queue.h"
 
 extern QueueHandle_t DisplayQueue;
+static system_data_t display_data;
 
 void DisplayTask(void *argument)
 {
-    static system_data_t display_data;
-
     OLED_Clear();
     OLED_ShowString(1, 1, "Voltage:  .   V");
     OLED_ShowString(2, 1, "Current: .   A");
