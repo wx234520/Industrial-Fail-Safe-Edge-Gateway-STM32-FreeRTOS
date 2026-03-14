@@ -1,14 +1,15 @@
 #ifndef _ONENET_H_
 #define _ONENET_H_
 
-_Bool OneNET_RegisterDevice(void);
-
 _Bool OneNet_DevLink(void);
 
 int OneNet_SendData(void);
 
 void OneNET_Subscribe(void);
 
+void OneNET_Publish(const char *topic, const char *msg);
+
 void OneNet_RevPro(unsigned char *cmd);
+
 
 #endif

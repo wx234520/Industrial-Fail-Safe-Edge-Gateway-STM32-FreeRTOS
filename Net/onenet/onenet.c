@@ -299,85 +299,75 @@ _Bool OneNET_RegisterDevice(void)
 //==========================================================
 _Bool OneNet_DevLink(void)
 {
-	
-	MQTT_PACKET_STRUCTURE mqttPacket = {NULL, 0, 0, 0};					//协议包
+    MQTT_PACKET_STRUCTURE mqttPacket = {NULL, 0, 0, 0};
+    unsigned char *dataPtr;
+    char authorization_buf[160];
+    _Bool status = 1;
 
-	unsigned char *dataPtr;
-	
-	char authorization_buf[160];
-	
-	_Bool status = 1;
-	
-	OneNET_Authorization("2018-10-31", PROID, 1893456000, ACCESS_KEY, DEVICE_NAME,
-								authorization_buf, sizeof(authorization_buf), 0);
-	
-	printf("OneNET_DevLink\r\n"
-							"NAME: %s,	PROID: %s,	KEY:%s\r\n"
-                        , DEVICE_NAME, PROID, authorization_buf);
-	
-	if(MQTT_PacketConnect(PROID, authorization_buf, DEVICE_NAME, 256, 1, MQTT_QOS_LEVEL0, NULL, NULL, 0, &mqttPacket) == 0)
-	{
-		ESP8266_SendData(mqttPacket._data, mqttPacket._len);			//上传平台
-		
-		dataPtr = ESP8266_GetIPD(250);									//等待平台响应
-		if(dataPtr != NULL)
-		{
-			if(MQTT_UnPacketRecv(dataPtr) == MQTT_PKT_CONNACK)
-			{
-				switch(MQTT_UnPacketConnectAck(dataPtr))
-				{
-					case 0:printf("Tips:	Connection successful\r\n");status = 0;break;
-					
-					case 1:printf("WARN:	Connection failed: Protocol error\r\n");break;
-					case 2:printf("WARN:	Connection failed: Invalid clientid\r\n");break;
-					case 3:printf("WARN:	Connection failed: Server error\r\n");break;
-					case 4:printf("WARN:	Connection failed: Wrong username or password\r\n");break;
-					case 5:printf("WARN: 	connection failed (token invalid)\r\n");break;
-					
-					default:printf("ERR:	Connection failed: Unknown error\r\n");break;
-				}
-			}
-		}
-		
-		MQTT_DeleteBuffer(&mqttPacket);								//删包
-	}
-	else
-		printf("WARN:	MQTT_PacketConnect Failed\r\n");
-	
-	return status;
-	
-}
+    OneNET_Authorization("2018-10-31", PROID, 1893456000, ACCESS_KEY, DEVICE_NAME,
+                         authorization_buf, sizeof(authorization_buf), 0);
 
-extern system_data_t comm_data;
-unsigned char OneNet_FillBuf(char *buf)
-{
-	
-	char text[48];
-	
-	memset(text, 0, sizeof(text));
-	
-	strcpy(buf, "{\"id\":\"123\",\"params\":{");
-	
-	memset(text, 0, sizeof(text));
-	sprintf(text, "\"Vol\":{\"value\":%.3f},", comm_data.voltage);
-	strcat(buf, text);
-	
-	memset(text, 0, sizeof(text));
-	sprintf(text, "\"Cur\":{\"value\":%.3f},", comm_data.current);
-	strcat(buf, text);
+    printf("OneNET_DevLink\r\n"
+           "NAME: %s,\tPROID: %s,\tKEY:%s\r\n",
+           DEVICE_NAME, PROID, authorization_buf);
 
-	memset(text, 0, sizeof(text));
-	sprintf(text, "\"TrackState\":{\"value\":%d},", comm_data.track_state);
-	strcat(buf, text);
+    if(MQTT_PacketConnect(PROID, authorization_buf, DEVICE_NAME, 256, 1,
+                          MQTT_QOS_LEVEL0, NULL, NULL, 0, &mqttPacket) != 0)
+    {
+        printf("WARN:\tMQTT_PacketConnect Failed\r\n");
+        return 1;
+    }
 
-	memset(text, 0, sizeof(text));
-	sprintf(text, "\"SymState\":{\"value\":%d}", comm_data.system_state);
-	strcat(buf, text);
-	
-	strcat(buf, "}}");
-	
-	return strlen(buf);
+    if(ESP8266_SendData(mqttPacket._data, mqttPacket._len) != 0)
+    {
+        printf("WARN:\tESP8266_SendData CONNECT packet failed\r\n");
+        MQTT_DeleteBuffer(&mqttPacket);
+        return 1;
+    }
 
+    MQTT_DeleteBuffer(&mqttPacket);
+
+    dataPtr = ESP8266_GetIPD(300);
+    if(dataPtr == NULL)
+    {
+        printf("WARN:\tNo CONNACK from server\r\n");
+        return 1;
+    }
+
+    if(MQTT_UnPacketRecv(dataPtr) == MQTT_PKT_CONNACK)
+    {
+        switch(MQTT_UnPacketConnectAck(dataPtr))
+        {
+            case 0:
+                printf("Tips:\tConnection successful\r\n");
+                status = 0;
+                break;
+            case 1:
+                printf("WARN:\tConnection failed: Protocol error\r\n");
+                break;
+            case 2:
+                printf("WARN:\tConnection failed: Invalid clientid\r\n");
+                break;
+            case 3:
+                printf("WARN:\tConnection failed: Server error\r\n");
+                break;
+            case 4:
+                printf("WARN:\tConnection failed: Wrong username or password\r\n");
+                break;
+            case 5:
+                printf("WARN:\tConnection failed: Token invalid\r\n");
+                break;
+            default:
+                printf("ERR:\tConnection failed: Unknown error\r\n");
+                break;
+        }
+    }
+    else
+    {
+        printf("WARN:\tServer reply is not CONNACK\r\n");
+    }
+
+    return status;
 }
 
 //==========================================================
@@ -423,31 +413,61 @@ unsigned char OneNet_FillBuf(char *buf)
 // 	}
 	
 // }
+extern system_data_t comm_data;
+unsigned char OneNet_FillBuf(char *buf)
+{
+    char text[48];
+
+    memset(text, 0, sizeof(text));
+
+    strcpy(buf, "{\"id\":\"123\",\"params\":{");
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"Vol\":{\"value\":%.3f},", comm_data.voltage);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"Cur\":{\"value\":%.3f},", comm_data.current);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"TrackState\":{\"value\":%d},", comm_data.track_state);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"SymState\":{\"value\":%d}", comm_data.system_state);
+    strcat(buf, text);
+
+    strcat(buf, "}}");
+
+    return strlen(buf);
+}
 
 int OneNet_SendData(void)
 {
-    MQTT_PACKET_STRUCTURE mqttPacket = {NULL,0,0,0};
+    MQTT_PACKET_STRUCTURE mqttPacket = {NULL, 0, 0, 0};
     char buf[256];
     short body_len;
 
-    memset(buf,0,sizeof(buf));
+    memset(buf, 0, sizeof(buf));
 
     body_len = OneNet_FillBuf(buf);
-
-    if(body_len == 0)
+    if(body_len <= 0)
         return 1;
 
-    if(MQTT_PacketSaveData(PROID,DEVICE_NAME,body_len,NULL,&mqttPacket) != 0)
+    if(MQTT_PacketSaveData(PROID, DEVICE_NAME, body_len, NULL, &mqttPacket) != 0)
         return 1;
 
-    memcpy(&mqttPacket._data[mqttPacket._len],buf,body_len);
-
+    memcpy(&mqttPacket._data[mqttPacket._len], buf, body_len);
     mqttPacket._len += body_len;
 
-    ESP8266_SendData(mqttPacket._data,mqttPacket._len);
+    if(ESP8266_SendData(mqttPacket._data, mqttPacket._len) != 0)
+    {
+        MQTT_DeleteBuffer(&mqttPacket);
+        return 1;
+    }
 
     MQTT_DeleteBuffer(&mqttPacket);
-
     return 0;
 }
 
@@ -465,18 +485,20 @@ int OneNet_SendData(void)
 //==========================================================
 void OneNET_Publish(const char *topic, const char *msg)
 {
+    MQTT_PACKET_STRUCTURE mqtt_packet = {NULL, 0, 0, 0};
 
-	MQTT_PACKET_STRUCTURE mqtt_packet = {NULL, 0, 0, 0};						//协议包
-	
-	printf("Publish Topic: %s, Msg: %s\r\n", topic, msg);
-	
-	if(MQTT_PacketPublish(MQTT_PUBLISH_ID, topic, msg, strlen(msg), MQTT_QOS_LEVEL0, 0, 1, &mqtt_packet) == 0)
-	{
-		ESP8266_SendData(mqtt_packet._data, mqtt_packet._len);					//向平台发送订阅请求
-		
-		MQTT_DeleteBuffer(&mqtt_packet);										//删包
-	}
+    printf("Publish Topic: %s, Msg: %s\r\n", topic, msg);
 
+    if(MQTT_PacketPublish(MQTT_PUBLISH_ID, topic, msg, strlen(msg),
+                          MQTT_QOS_LEVEL0, 0, 1, &mqtt_packet) == 0)
+    {
+        if(ESP8266_SendData(mqtt_packet._data, mqtt_packet._len) != 0)
+        {
+            printf("WARN:\tPublish send failed\r\n");
+        }
+
+        MQTT_DeleteBuffer(&mqtt_packet);
+    }
 }
 
 //==========================================================
@@ -492,23 +514,23 @@ void OneNET_Publish(const char *topic, const char *msg)
 //==========================================================
 void OneNET_Subscribe(void)
 {
-	
-	MQTT_PACKET_STRUCTURE mqtt_packet = {NULL, 0, 0, 0};						//协议包
-	
-	char topic_buf[58];
-	const char *topic = topic_buf;
-	
-	snprintf(topic_buf, sizeof(topic_buf), "$sys/%s/%s/thing/property/set", PROID, DEVICE_NAME);
-	
-	printf("Subscribe Topic: %s\r\n", topic_buf);
-	
-	if(MQTT_PacketSubscribe(MQTT_SUBSCRIBE_ID, MQTT_QOS_LEVEL0, &topic, 1, &mqtt_packet) == 0)
-	{
-		ESP8266_SendData(mqtt_packet._data, mqtt_packet._len);					//向平台发送订阅请求
-		
-		MQTT_DeleteBuffer(&mqtt_packet);										//删包
-	}
+    MQTT_PACKET_STRUCTURE mqtt_packet = {NULL, 0, 0, 0};
+    char topic_buf[64];
+    const char *topic = topic_buf;
 
+    snprintf(topic_buf, sizeof(topic_buf), "$sys/%s/%s/thing/property/set", PROID, DEVICE_NAME);
+
+    printf("Subscribe Topic: %s\r\n", topic_buf);
+
+    if(MQTT_PacketSubscribe(MQTT_SUBSCRIBE_ID, MQTT_QOS_LEVEL0, &topic, 1, &mqtt_packet) == 0)
+    {
+        if(ESP8266_SendData(mqtt_packet._data, mqtt_packet._len) != 0)
+        {
+            printf("WARN:\tSubscribe send failed\r\n");
+        }
+
+        MQTT_DeleteBuffer(&mqtt_packet);
+    }
 }
 
 //==========================================================
@@ -524,81 +546,106 @@ void OneNET_Subscribe(void)
 //==========================================================
 void OneNet_RevPro(unsigned char *cmd)
 {
-	
-	char *req_payload = NULL;
-	char *cmdid_topic = NULL;
+    char *req_payload = NULL;
+    char *cmdid_topic = NULL;
 
-	char reply_topic[48];
-	char reply_msg[48];
-	
-	
-	unsigned short topic_len = 0;
-	unsigned short req_len = 0;
-	
-	unsigned char qos = 0;
-	static unsigned short pkt_id = 0;
-	
-	unsigned char type = 0;
-	
-	short result = 0;
+    char reply_topic[48];
+    char reply_msg[48];
 
-		
-	cJSON *raw_json;
-	
-	type = MQTT_UnPacketRecv(cmd);
-	switch(type)
-	{
-		case MQTT_PKT_PUBLISH:																//接收的Publish消息
-		
-			result = MQTT_UnPacketPublish(cmd, &cmdid_topic, &topic_len, &req_payload, &req_len, &qos, &pkt_id);
-			if(result == 0)
-			{
-				// char *data_ptr = NULL;
-				
-				printf("topic: %s, topic_len: %d, payload: %s, payload_len: %d\r\n",
-																	cmdid_topic, topic_len, req_payload, req_len);
-				
-				raw_json = cJSON_Parse(req_payload);
+    unsigned short topic_len = 0;
+    unsigned short req_len = 0;
+    unsigned char qos = 0;
+    static unsigned short pkt_id = 0;
 
-				sprintf(reply_topic, "$sys/%s/%s/thing/property/set_reply", PROID, DEVICE_NAME);
-				sprintf(reply_msg, "{\"id\": \"%s\",\"code\": 200,\"msg\": \"success\"}", cJSON_GetObjectItem(raw_json,"id")->valuestring);
-				
-				cJSON_Delete(raw_json);
+    unsigned char type = 0;
+    short result = 0;
 
-				OneNET_Publish(reply_topic,reply_msg);
-				
-			}
-			
-		case MQTT_PKT_PUBACK:														//发送Publish消息，平台回复的Ack
-		
-			if(MQTT_UnPacketPublishAck(cmd) == 0)
-				printf("Tips:	MQTT Publish Send OK\r\n");
-			
-		break;
-		
-		case MQTT_PKT_SUBACK:																//发送Subscribe消息的Ack
-		
-			if(MQTT_UnPacketSubscribe(cmd) == 0)
-				printf("Tips:	MQTT Subscribe OK\r\n");
-			else
-				printf("Tips:	MQTT Subscribe Err\r\n");
-		
-		break;
-		
-		default:
-			result = -1;
-		break;
-	}
-	
-	ESP8266_Clear();									//清空缓存
-	
-	if(result == -1)
-		return;
-	
-	if(type == MQTT_PKT_CMD || type == MQTT_PKT_PUBLISH)
-	{
-		MQTT_FreeBuffer(cmdid_topic);
-		MQTT_FreeBuffer(req_payload);
-	}
+    cJSON *raw_json = NULL;
 
+    type = MQTT_UnPacketRecv(cmd);
+
+    switch(type)
+    {
+        case MQTT_PKT_PUBLISH:
+        {
+            cJSON *id_item = NULL;
+
+            result = MQTT_UnPacketPublish(cmd,
+                                          &cmdid_topic,
+                                          &topic_len,
+                                          &req_payload,
+                                          &req_len,
+                                          &qos,
+                                          &pkt_id);
+
+            if(result == 0)
+            {
+                printf("topic: %s, topic_len: %d, payload: %s, payload_len: %d\r\n",
+                       cmdid_topic, topic_len, req_payload, req_len);
+
+                raw_json = cJSON_Parse(req_payload);
+                if(raw_json != NULL)
+                {
+                    id_item = cJSON_GetObjectItem(raw_json, "id");
+
+                    snprintf(reply_topic, sizeof(reply_topic),
+                             "$sys/%s/%s/thing/property/set_reply",
+                             PROID, DEVICE_NAME);
+
+                    if(id_item != NULL &&
+                       id_item->type == cJSON_String &&
+                       id_item->valuestring != NULL)
+                    {
+                        snprintf(reply_msg, sizeof(reply_msg),
+                                 "{\"id\":\"%s\",\"code\":200,\"msg\":\"success\"}",
+                                 id_item->valuestring);
+
+                        OneNET_Publish(reply_topic, reply_msg);
+                    }
+                    else
+                    {
+                        printf("WARN:\tset payload has no valid id\r\n");
+                    }
+
+                    cJSON_Delete(raw_json);
+                }
+                else
+                {
+                    printf("WARN:\tcJSON_Parse failed\r\n");
+                }
+            }
+            break;
+        }
+
+        case MQTT_PKT_PUBACK:
+        {
+            if(MQTT_UnPacketPublishAck(cmd) == 0)
+                printf("Tips:\tMQTT Publish Send OK\r\n");
+            break;
+        }
+
+        case MQTT_PKT_SUBACK:
+        {
+            if(MQTT_UnPacketSubscribe(cmd) == 0)
+                printf("Tips:\tMQTT Subscribe OK\r\n");
+            else
+                printf("Tips:\tMQTT Subscribe Err\r\n");
+            break;
+        }
+
+        default:
+        {
+            result = -1;
+            break;
+        }
+    }
+
+    if(result == -1)
+        return;
+
+    if(type == MQTT_PKT_CMD || type == MQTT_PKT_PUBLISH)
+    {
+        MQTT_FreeBuffer(cmdid_topic);
+        MQTT_FreeBuffer(req_payload);
+    }
 }
