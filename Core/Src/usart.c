@@ -27,11 +27,6 @@
 #include "semphr.h"
 #pragma import(__use_no_semihosting)
 
-uint8_t dma_rx_buf[512];  // DMA 缓冲
-
-extern uint8_t esp8266_buf[512];
-extern SemaphoreHandle_t esp_rx_semaphore;
-
 struct __FILE
 {
     int handle;
@@ -241,22 +236,25 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
-void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
-{
-  if (huart == &huart1)
-    {
-        if(Size < sizeof(esp8266_buf))
-        {
-            memcpy(esp8266_buf, dma_rx_buf, Size);
-            esp8266_buf[Size] = '\0';
-        }
+// void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+// {
+//     if(huart == &huart1)
+//     {
+//         for(uint16_t i = 0; i < Size; i++)
+//         {
+//             esp_rx_buf[esp_rx_write++] = dma_rx_buf[i];
 
-        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-        xSemaphoreGiveFromISR(esp_rx_semaphore, &xHigherPriorityTaskWoken);
-        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+//             if(esp_rx_write >= ESP_RX_BUF_SIZE)
+//                 esp_rx_write = 0;
+//         }
 
-        HAL_UARTEx_ReceiveToIdle_DMA(&huart1, dma_rx_buf, sizeof(dma_rx_buf));
-        __HAL_DMA_DISABLE_IT(huart1.hdmarx, DMA_IT_HT);
-    }
-}
+//         BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+//         xSemaphoreGiveFromISR(esp_rx_semaphore, &xHigherPriorityTaskWoken);
+//         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+
+//         HAL_UARTEx_ReceiveToIdle_DMA(&huart1, dma_rx_buf, ESP_DMA_BUF_SIZE);
+//         __HAL_DMA_DISABLE_IT(huart1.hdmarx, DMA_IT_HT);
+//     }
+// }
+
 /* USER CODE END 1 */

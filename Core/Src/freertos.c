@@ -67,6 +67,7 @@ QueueHandle_t SafeQueue;
 QueueHandle_t CommQueue;
 SemaphoreHandle_t esp_rx_semaphore;
 SemaphoreHandle_t esp_buf_mutex;
+SemaphoreHandle_t esp_tx_mutex;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -116,11 +117,12 @@ void MX_FREERTOS_Init(void) {
   CommQueue = xQueueCreate(1,sizeof(system_data_t));
   esp_rx_semaphore = xSemaphoreCreateBinary();
   esp_buf_mutex = xSemaphoreCreateMutex();
+  esp_tx_mutex = xSemaphoreCreateMutex();
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  //defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -152,7 +154,7 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    vTaskDelay(100);
   }
   /* USER CODE END StartDefaultTask */
 }

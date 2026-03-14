@@ -23,6 +23,7 @@ void SafetyTask(void *argument)
             xQueueOverwrite(DisplayQueue,&safety_data);
             xQueueOverwrite(CommQueue,&safety_data);
 
+
             heartbeat_counter = 0; // Reset heartbeat counter on successful data reception
             last_heartbeat = xTaskGetTickCount(); // Update last heartbeat time
         }

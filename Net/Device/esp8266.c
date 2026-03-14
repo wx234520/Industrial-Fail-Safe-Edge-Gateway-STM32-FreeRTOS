@@ -10,50 +10,67 @@
 
 
 #define ESP8266_WIFI_INFO		"AT+CWJAP=\"3-201\",\"282537137234zhi\"\r\n"
+#define ESP_RX_BUF_SIZE 2048
+#define ESP_DMA_BUF_SIZE 256
 
 // extern uint8_t huart2_rev_byte;
 extern SemaphoreHandle_t esp_rx_semaphore;
 extern SemaphoreHandle_t esp_buf_mutex;
+extern SemaphoreHandle_t esp_tx_mutex;
 
-uint8_t esp8266_buf[512];
-uint16_t esp8266_cnt = 0, esp8266_cntPre = 0;
+volatile uint16_t esp_rx_write = 0;
+volatile uint16_t esp_rx_read = 0;
+uint8_t dma_rx_buf[ESP_DMA_BUF_SIZE];
+uint8_t esp_rx_buf[ESP_RX_BUF_SIZE];
 
-
-//==========================================================
-//	函数名称：	ESP8266_Clear
-//
-//	函数功能：	清空缓存
-//
-//	入口参数：	无
-//
-//	返回参数：	无
-//
-//	说明：		
-//==========================================================
-void ESP8266_Clear(void)
+int ESP8266_Read(char *buf,int maxlen)
 {
-	xSemaphoreTake(esp_buf_mutex,portMAX_DELAY);
-	
-	memset(esp8266_buf, 0, sizeof(esp8266_buf));
-	esp8266_cnt = 0;
-	
-	xSemaphoreGive(esp_buf_mutex);
+    int i=0;
+
+    xSemaphoreTake(esp_buf_mutex,portMAX_DELAY);
+
+    while(esp_rx_read != esp_rx_write)
+    {
+        buf[i++] = esp_rx_buf[esp_rx_read++];
+
+        if(esp_rx_read >= ESP_RX_BUF_SIZE)
+            esp_rx_read = 0;
+
+        if(i >= maxlen-1)
+            break;
+    }
+
+    xSemaphoreGive(esp_buf_mutex);
+
+    buf[i] = 0;
+
+    return i;
 }
 
-//==========================================================
-//	函数名称：	ESP8266_WaitRecive
-//
-//	函数功能：	等待接收完成
-//
-//	入口参数：	无
-//
-//	返回参数：	REV_OK-接收完成		REV_WAIT-接收超时未完成
-//
-//	说明：		循环调用检测是否接收完成
-//==========================================================
+// void ESP8266_Clear(void)
+// {
+//     xSemaphoreTake(esp_buf_mutex,portMAX_DELAY);
+
+//     memset(esp_rx_buf,0,sizeof(esp_rx_buf));
+//     esp_rx_write = 0;
+//     esp_rx_read  = 0;
+
+//     xSemaphoreGive(esp_buf_mutex);
+// }
+
+void ESP8266_Clear(void)
+{
+    xSemaphoreTake(esp_buf_mutex,portMAX_DELAY);
+
+    memset(esp_rx_buf,0,sizeof(esp_rx_buf));
+	esp_rx_read = 0;
+	esp_rx_write = 0;
+
+    xSemaphoreGive(esp_buf_mutex);
+}
+
 _Bool ESP8266_WaitRecive(void)
 {
-
 	if(xSemaphoreTake(esp_rx_semaphore,pdMS_TO_TICKS(3000)) == pdPASS)
 	{
 		// 等待信号量（中断收到完整帧后释放）
@@ -62,39 +79,81 @@ _Bool ESP8266_WaitRecive(void)
 	return REV_WAIT;								//超时返回接收未完成标志
 }
 
-//==========================================================
-//	函数名称：	ESP8266_SendCmd
-//
-//	函数功能：	发送命令
-//
-//	入口参数：	cmd：命令
-//				res：需要检查的返回指令
-//
-//	返回参数：	0-成功	1-失败
-//
-//	说明：		
-//==========================================================
+// _Bool ESP8266_SendCmd(char *cmd, char *res)
+// {
+//     char recvBuf[512];
+//     int recvLen = 0;
+
+//     uint32_t tickStart = xTaskGetTickCount();
+
+//     ESP8266_Clear();
+
+//     HAL_UART_Transmit(&huart1,(uint8_t*)cmd,strlen(cmd),1000);
+
+//     while((xTaskGetTickCount() - tickStart) < pdMS_TO_TICKS(3000))
+//     {
+//         int len = ESP8266_Read(recvBuf + recvLen, sizeof(recvBuf) - recvLen - 1);
+
+//         if(len > 0)
+//         {
+//             recvLen += len;
+//             recvBuf[recvLen] = 0;
+
+//             printf("ESP RX: %s\r\n", recvBuf);
+
+//             if(strstr(recvBuf, res))
+//             {
+//                 return 0;
+//             }
+
+//             if(strstr(recvBuf, "ERROR"))
+//             {
+//                 return 1;
+//             }
+//         }
+
+//         vTaskDelay(pdMS_TO_TICKS(10));
+//     }
+
+//     return 1;
+// }
+
 _Bool ESP8266_SendCmd(char *cmd, char *res)
 {
-	ESP8266_Clear();
-	
-	HAL_UART_Transmit(&huart1,(uint8_t*)cmd,strlen(cmd),500);
+    static char recvBuf[512];
+    int recvLen = 0;
 
-    static uint8_t timeOut = 50;
+	memset(recvBuf,0,sizeof(recvBuf));
 
-    while(timeOut--)
+    uint32_t tick = xTaskGetTickCount();
+
+    xSemaphoreTake(esp_tx_mutex, portMAX_DELAY);
+
+    ESP8266_Clear();
+
+    HAL_UART_Transmit(&huart1,(uint8_t*)cmd,strlen(cmd),1000);
+
+    while((xTaskGetTickCount() - tick) < pdMS_TO_TICKS(3000))
     {
-        if(ESP8266_WaitRecive() == REV_OK)
+        int len = ESP8266_Read(recvBuf + recvLen,
+                               sizeof(recvBuf) - recvLen - 1);
+
+        if(len > 0)
         {
-            if(strstr((char *)esp8266_buf, res) != NULL)
+            recvLen += len;
+            recvBuf[recvLen] = 0;
+
+            printf("ESP RX: %s",recvBuf + recvLen - len);
+
+            if(strstr(recvBuf,res))
             {
-                ESP8266_Clear();
+                xSemaphoreGive(esp_tx_mutex);
                 return 0;
             }
 
-            if(strstr((char *)esp8266_buf, "ERROR") != NULL)
+            if(strstr(recvBuf,"ERROR"))
             {
-                ESP8266_Clear();
+                xSemaphoreGive(esp_tx_mutex);
                 return 1;
             }
         }
@@ -102,122 +161,235 @@ _Bool ESP8266_SendCmd(char *cmd, char *res)
         vTaskDelay(pdMS_TO_TICKS(10));
     }
 
+    xSemaphoreGive(esp_tx_mutex);
+
     return 1;
 }
 
-//==========================================================
-//	函数名称：	ESP8266_SendData
-//
-//	函数功能：	发送数据
-//
-//	入口参数：	data：数据
-//				len：长度
-//
-//	返回参数：	无
-//
-//	说明：		
-//==========================================================
-void ESP8266_SendData(unsigned char *data, unsigned short len)
-{
 
-	char cmdBuf[32];
+// void ESP8266_SendData(unsigned char *data, unsigned short len)
+// {
+//     char cmdBuf[32];
+
+//     ESP8266_Clear();
+
+//     sprintf(cmdBuf, "AT+CIPSEND=%d\r\n", len);
+
+//     if(!ESP8266_SendCmd(cmdBuf, ">"))
+//     {
+// 		printf("SendData Start\r\n");
+//         HAL_UART_Transmit(&huart1, data, len, 1000);
+// 		printf("SendData End\r\n");
+//         ESP8266_WaitRecive();
+//     }
+// 	else
+//     {
+//         printf("CIPSEND Fail\r\n");
+//     }
+// }
+
+void ESP8266_SendData(unsigned char *data, unsigned short len) 
+{ 
+	char cmd[32]; 
+	char buf[128]; 
 	
-	ESP8266_Clear();								//清空接收缓存
-	sprintf(cmdBuf, "AT+CIPSEND=%d\r\n", len);		//发送命令
-	if(!ESP8266_SendCmd(cmdBuf, ">"))				//收到‘>’时可以发送数据
-	{
-        HAL_UART_Transmit(&huart1, (uint8_t *)data, len, 500);
-	}
-
+	uint32_t tick; 
+	
+	xSemaphoreTake(esp_tx_mutex, portMAX_DELAY); 
+	sprintf(cmd,"AT+CIPSEND=%d\r\n",len); 
+	
+	ESP8266_Clear(); 
+	HAL_UART_Transmit(&huart1,(uint8_t*)cmd,strlen(cmd),1000); 
+	tick = xTaskGetTickCount(); 
+	
+	/* 等待 > */ 
+	while((xTaskGetTickCount() - tick) < pdMS_TO_TICKS(3000)) 
+	{ 
+		int r = ESP8266_Read(buf,sizeof(buf)); 
+		if(r > 0) 
+		{ 
+			if(strstr(buf,">")) break; 
+		} 
+		vTaskDelay(pdMS_TO_TICKS(10)); 
+	} 
+	
+	HAL_UART_Transmit(&huart1,data,len,1000); 
+	tick = xTaskGetTickCount(); 
+	
+	/* 等待 SEND OK */ 
+	while((xTaskGetTickCount() - tick) < pdMS_TO_TICKS(3000)) 
+	{ 
+		int r = ESP8266_Read(buf,sizeof(buf)); 
+		
+		if(r > 0) 
+		{ 
+			if(strstr(buf,"SEND OK")) break; 
+		} 
+		
+		vTaskDelay(pdMS_TO_TICKS(10)); 
+	} 
+	xSemaphoreGive(esp_tx_mutex); 
 }
 
-//==========================================================
-//	函数名称：	ESP8266_GetIPD
-//
-//	函数功能：	获取平台返回的数据
-//
-//	入口参数：	等待的时间(乘以10ms)
-//
-//	返回参数：	平台返回的原始数据
-//
-//	说明：		不同网络设备返回的格式不同，需要去调试
-//				如ESP8266的返回格式为	"+IPD,x:yyy"	x代表数据长度，yyy是数据内容
-//==========================================================
+
+// unsigned char *ESP8266_GetIPD(unsigned short timeOut)
+// {
+//     static char recvBuf[1024];
+//     static int recvLen = 0;
+
+//     char *ptrIPD;
+//     char *ptrColon;
+
+//     while(timeOut--)
+//     {
+//         int len = ESP8266_Read(recvBuf + recvLen, sizeof(recvBuf) - recvLen);
+
+//         if(len > 0)
+//         {
+//             recvLen += len;
+//             recvBuf[recvLen] = 0;
+
+//             ptrIPD = strstr(recvBuf, "+IPD,");
+
+//             if(ptrIPD)
+//             {
+//                 ptrColon = strchr(ptrIPD, ':');
+
+//                 if(ptrColon)
+//                 {
+//                     return (unsigned char*)(ptrColon + 1);
+//                 }
+//             }
+
+//             if(recvLen > 900)
+//                 recvLen = 0;
+//         }
+
+//         vTaskDelay(pdMS_TO_TICKS(10));
+//     }
+
+//     return NULL;
+// }
+
 unsigned char *ESP8266_GetIPD(unsigned short timeOut)
 {
+    static char buf[1024];
+    static int len = 0;
 
-	char *ptrIPD = NULL;
-	
-	do
-	{
-		if(ESP8266_WaitRecive() == REV_OK)								//如果接收完成
-		{
-			ptrIPD = strstr((char *)esp8266_buf, "IPD,");				//搜索“IPD”头
-			if(ptrIPD == NULL)											//如果没找到，可能是IPD头的延迟，还是需要等待一会，但不会超过设定的时间
-			{
-				//printf("\"IPD\" not found\r\n");
-			}
-			else
-			{
-				ptrIPD = strchr(ptrIPD, ':');							//找到':'
-				if(ptrIPD != NULL)
-				{
-					ptrIPD++;
-					return (unsigned char *)(ptrIPD);
-				}
-				else
-					return NULL;
-				
-			}
-		}
-		vTaskDelay(pdMS_TO_TICKS(5));													//延时等待
-	} while(timeOut--);
-	
-	return NULL;														//超时还未找到，返回空指针
+    char *ipd;
+    int dataLen;
 
+    while(timeOut--)
+    {
+        int r = ESP8266_Read(buf + len,sizeof(buf) - len - 1);
+
+        if(r > 0)
+        {
+            len += r;
+            buf[len] = 0;
+
+            ipd = strstr(buf,"+IPD,");
+
+            if(ipd)
+            {
+                sscanf(ipd,"+IPD,%d:",&dataLen);
+
+                char *data = strchr(ipd,':');
+
+                if(data)
+                {
+                    data++;
+
+                    if((buf + len) - data >= dataLen)
+                    {
+                        return (unsigned char*)data;
+                    }
+                }
+            }
+
+            if(len > 900)
+                len = 0;
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
+
+    return NULL;
 }
 
-//==========================================================
-//	函数名称：	ESP8266_Init
-//
-//	函数功能：	初始化ESP8266
-//
-//	入口参数：	无
-//
-//	返回参数：	无
-//
-//	说明：		
-//==========================================================
-void ESP8266_Init(void)
-{
-	// printf("RESET ESP8266\r\n");
-
-    // HAL_UART_Transmit(&huart1,(uint8_t*)"AT+RST\r\n",8,500);
-
-    // vTaskDelay(pdMS_TO_TICKS(5000));
+// void ESP8266_Init(void)
+// {	
+// 	ESP8266_Clear();
 	
-	ESP8266_Clear();
+// 	printf("1. AT\r\n"); 
+// 	while(ESP8266_SendCmd("AT\r\n", "OK"))
+// 	vTaskDelay(pdMS_TO_TICKS(500));	
+
+// 	printf("2. CWMODE\r\n");
+// 	while(ESP8266_SendCmd("AT+CWMODE=1\r\n", "OK"))
+// 	vTaskDelay(pdMS_TO_TICKS(500));
+
+// 	printf("3. CIPMUX\r\n");
+// 	while(ESP8266_SendCmd("AT+CIPMUX=0\r\n","OK"))
+//     vTaskDelay(pdMS_TO_TICKS(500));
 	
+// 	printf("4. AT+CWDHCP\r\n");
+// 	while(ESP8266_SendCmd("AT+CWDHCP=1,1\r\n", "OK"))
+// 	vTaskDelay(pdMS_TO_TICKS(500));
+	
+// 	printf("5. CWJAP\r\n");
+// 	while(ESP8266_SendCmd(ESP8266_WIFI_INFO, "GOT IP"))
+// 	vTaskDelay(pdMS_TO_TICKS(2000));
+	
+// 	printf("ESP8266 Init OK\r\n");
+// 	vTaskDelay(pdMS_TO_TICKS(3000));
+// }
+
+void ESP8266_Init(void) 
+{ 
 	printf("1. AT\r\n"); 
-	while(ESP8266_SendCmd("AT\r\n", "OK"))
-	vTaskDelay(pdMS_TO_TICKS(500));	
-
-	printf("2. CWMODE\r\n");
-	while(ESP8266_SendCmd("AT+CWMODE=1\r\n", "OK"))
-	vTaskDelay(pdMS_TO_TICKS(500));
-
-	printf("3. CIPMUX\r\n");
-	while(ESP8266_SendCmd("AT+CIPMUX=0\r\n","OK"))
-    vTaskDelay(pdMS_TO_TICKS(500));
+	while(ESP8266_SendCmd("AT\r\n","OK")); 
 	
-	printf("4. AT+CWDHCP\r\n");
-	while(ESP8266_SendCmd("AT+CWDHCP=1,1\r\n", "OK"))
-	vTaskDelay(pdMS_TO_TICKS(500));
+	printf("2. CWMODE\r\n"); 
+	while(ESP8266_SendCmd("AT+CWMODE=1\r\n","OK")); 
 	
-	printf("5. CWJAP\r\n");
-	while(ESP8266_SendCmd(ESP8266_WIFI_INFO, "GOT IP"))
-	vTaskDelay(pdMS_TO_TICKS(2000));
+	printf("3. CIPMUX\r\n"); 
+	while(ESP8266_SendCmd("AT+CIPMUX=0\r\n","OK")); 
 	
-	printf("ESP8266 Init OK\r\n");
-	vTaskDelay(pdMS_TO_TICKS(3000));
+	printf("4. CWDHCP\r\n"); 
+	while(ESP8266_SendCmd("AT+CWDHCP=1,1\r\n","OK")); 
+	
+	printf("5. CWJAP\r\n"); 
+	while(ESP8266_SendCmd(ESP8266_WIFI_INFO,"GOT IP")); 
+	printf("WiFi OK\r\n"); 
+	
+	ESP8266_Clear(); 
+	vTaskDelay(pdMS_TO_TICKS(1000)); 
+	
+	printf("ESP8266 Init OK\r\n"); 
 }
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+    if(huart->Instance == USART1)
+    {
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+        for(uint16_t i=0;i<Size;i++)
+        {
+            esp_rx_buf[esp_rx_write++] = dma_rx_buf[i];
+
+            if(esp_rx_write >= ESP_RX_BUF_SIZE)
+                esp_rx_write = 0;
+        }
+
+        xSemaphoreGiveFromISR(esp_rx_semaphore,&xHigherPriorityTaskWoken);
+
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart1,dma_rx_buf,ESP_DMA_BUF_SIZE);
+
+        __HAL_DMA_DISABLE_IT(huart1.hdmarx,DMA_IT_HT);
+
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    }
+}
+

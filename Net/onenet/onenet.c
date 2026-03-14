@@ -1,24 +1,3 @@
-/**
-	************************************************************
-	************************************************************
-	************************************************************
-	*	文件名： 	onenet.c
-	*
-	*	作者： 		张继瑞
-	*
-	*	日期： 		2017-05-08
-	*
-	*	版本： 		V1.1
-	*
-	*	说明： 		与onenet平台的数据交互接口层
-	*
-	*	修改记录：	V1.0：协议封装、返回判断都在同一个文件，并且不同协议接口不同。
-	*				V1.1：提供统一接口供应用层使用，根据不同协议文件来封装协议相关的内容。
-	************************************************************
-	************************************************************
-	************************************************************
-**/
-
 //单片机头文件
 #include "main.h"
 #include "FreeRTOS.h"
@@ -37,8 +16,7 @@
 
 //硬件驱动
 #include "usart.h"
-// #include "delay.h"
-// #include "led.h"
+#include "typedefs.h"
 
 //C库
 #include <string.h>
@@ -57,11 +35,6 @@
 char devid[16];
 
 char key[48];
-
-
-extern unsigned char esp8266_buf[512];
-extern uint8_t temp;
-extern uint8_t humi;
 
 /*
 ************************************************************
@@ -257,7 +230,7 @@ _Bool OneNET_RegisterDevice(void)
 	while(ESP8266_SendCmd("AT+CIPSTART=\"TCP\",\"183.230.40.33\",80\r\n", "CONNECT"))
 		vTaskDelay(500);
 	
-	OneNET_Authorization("2018-10-31", PROID, 1956499200, ACCESS_KEY, NULL,
+	OneNET_Authorization("2018-10-31", PROID, 1893456000, ACCESS_KEY, NULL,
 							authorization_buf, sizeof(authorization_buf), 1);
 	
 	snprintf(send_ptr, 280 + send_len, "POST /mqtt/v1/devices/reg HTTP/1.1\r\n"
@@ -335,7 +308,7 @@ _Bool OneNet_DevLink(void)
 	
 	_Bool status = 1;
 	
-	OneNET_Authorization("2018-10-31", PROID, 1956499200, ACCESS_KEY, DEVICE_NAME,
+	OneNET_Authorization("2018-10-31", PROID, 1893456000, ACCESS_KEY, DEVICE_NAME,
 								authorization_buf, sizeof(authorization_buf), 0);
 	
 	printf("OneNET_DevLink\r\n"
@@ -375,7 +348,7 @@ _Bool OneNet_DevLink(void)
 	
 }
 
-extern uint8_t temp,humi;
+extern system_data_t comm_data;
 unsigned char OneNet_FillBuf(char *buf)
 {
 	
@@ -386,16 +359,20 @@ unsigned char OneNet_FillBuf(char *buf)
 	strcpy(buf, "{\"id\":\"123\",\"params\":{");
 	
 	memset(text, 0, sizeof(text));
-	sprintf(text, "\"temp\":{\"value\":%d},", temp);
+	sprintf(text, "\"Vol\":{\"value\":%.3f},", comm_data.voltage);
 	strcat(buf, text);
 	
 	memset(text, 0, sizeof(text));
-	sprintf(text, "\"humi\":{\"value\":%d}", humi);
+	sprintf(text, "\"Cur\":{\"value\":%.3f},", comm_data.current);
 	strcat(buf, text);
-	
-	// memset(text, 0, sizeof(text));
-	// sprintf(text, "\"led\":{\"value\":%s}", Led_Status ? "true" : "false");
-	// strcat(buf, text);
+
+	memset(text, 0, sizeof(text));
+	sprintf(text, "\"TrackState\":{\"value\":%d},", comm_data.track_state);
+	strcat(buf, text);
+
+	memset(text, 0, sizeof(text));
+	sprintf(text, "\"SymState\":{\"value\":%d}", comm_data.system_state);
+	strcat(buf, text);
 	
 	strcat(buf, "}}");
 	
@@ -414,37 +391,64 @@ unsigned char OneNet_FillBuf(char *buf)
 //
 //	说明：		
 //==========================================================
-void OneNet_SendData(void)
+// void OneNet_SendData(void)
+// {
+
+// 	MQTT_PACKET_STRUCTURE mqttPacket = {NULL, 0, 0, 0};												//协议包
+	
+// 	char buf[256];
+	
+// 	short body_len = 0;
+	
+// //	printf("Tips:	OneNet_SendData-MQTT\r\n");
+	
+// 	memset(buf, 0, sizeof(buf));
+	
+// 	body_len = OneNet_FillBuf(buf);																	//获取当前需要发送的数据流的总长度
+
+// 	if(body_len)
+// 	{
+// 		if(MQTT_PacketSaveData(PROID, DEVICE_NAME, body_len, NULL, &mqttPacket) == 0)				//封包
+// 		{
+// 			memcpy(&mqttPacket._data[mqttPacket._len], buf, body_len);
+// 			mqttPacket._len += body_len;
+			
+// 			ESP8266_SendData(mqttPacket._data, mqttPacket._len);									//上传数据到平台
+// //			printf("Send %d Bytes\r\n", mqttPacket._len);
+			
+// 			MQTT_DeleteBuffer(&mqttPacket);															//删包
+// 		}
+// 		else
+// 			printf("WARN:	EDP_NewBuffer Failed\r\n");
+// 	}
+	
+// }
+
+int OneNet_SendData(void)
 {
-	
-	MQTT_PACKET_STRUCTURE mqttPacket = {NULL, 0, 0, 0};												//协议包
-	
-	char buf[256];
-	
-	short body_len = 0, i = 0;
-	
-//	printf("Tips:	OneNet_SendData-MQTT\r\n");
-	
-	memset(buf, 0, sizeof(buf));
-	
-	body_len = OneNet_FillBuf(buf);																	//获取当前需要发送的数据流的总长度
-	
-	if(body_len)
-	{
-		if(MQTT_PacketSaveData(PROID, DEVICE_NAME, body_len, NULL, &mqttPacket) == 0)				//封包
-		{
-			for(; i < body_len; i++)
-				mqttPacket._data[mqttPacket._len++] = buf[i];
-			
-			ESP8266_SendData(mqttPacket._data, mqttPacket._len);									//上传数据到平台
-//			printf("Send %d Bytes\r\n", mqttPacket._len);
-			
-			MQTT_DeleteBuffer(&mqttPacket);															//删包
-		}
-		else
-			printf("WARN:	EDP_NewBuffer Failed\r\n");
-	}
-	
+    MQTT_PACKET_STRUCTURE mqttPacket = {NULL,0,0,0};
+    char buf[256];
+    short body_len;
+
+    memset(buf,0,sizeof(buf));
+
+    body_len = OneNet_FillBuf(buf);
+
+    if(body_len == 0)
+        return 1;
+
+    if(MQTT_PacketSaveData(PROID,DEVICE_NAME,body_len,NULL,&mqttPacket) != 0)
+        return 1;
+
+    memcpy(&mqttPacket._data[mqttPacket._len],buf,body_len);
+
+    mqttPacket._len += body_len;
+
+    ESP8266_SendData(mqttPacket._data,mqttPacket._len);
+
+    MQTT_DeleteBuffer(&mqttPacket);
+
+    return 0;
 }
 
 //==========================================================
@@ -539,7 +543,7 @@ void OneNet_RevPro(unsigned char *cmd)
 	short result = 0;
 
 		
-	cJSON *raw_json, *params_json/*, *led_json*/;
+	cJSON *raw_json;
 	
 	type = MQTT_UnPacketRecv(cmd);
 	switch(type)
@@ -555,14 +559,6 @@ void OneNet_RevPro(unsigned char *cmd)
 																	cmdid_topic, topic_len, req_payload, req_len);
 				
 				raw_json = cJSON_Parse(req_payload);
-				params_json = cJSON_GetObjectItem(raw_json,"params");
-				// led_json = cJSON_GetObjectItem(params_json,"led");
-				// if(led_json != NULL)
-				// {
-				// 	if(led_json->type == cJSON_True) Led_Set(LED_ON);
-				// 	else Led_Set(LED_OFF);
-				// }
-
 
 				sprintf(reply_topic, "$sys/%s/%s/thing/property/set_reply", PROID, DEVICE_NAME);
 				sprintf(reply_msg, "{\"id\": \"%s\",\"code\": 200,\"msg\": \"success\"}", cJSON_GetObjectItem(raw_json,"id")->valuestring);
