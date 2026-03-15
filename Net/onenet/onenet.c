@@ -17,6 +17,7 @@
 //硬件驱动
 #include "usart.h"
 #include "typedefs.h"
+#include "safety_service.h"
 
 //C库
 #include <string.h>
@@ -381,44 +382,14 @@ _Bool OneNet_DevLink(void)
 //
 //	说明：		
 //==========================================================
-// void OneNet_SendData(void)
-// {
-
-// 	MQTT_PACKET_STRUCTURE mqttPacket = {NULL, 0, 0, 0};												//协议包
-	
-// 	char buf[256];
-	
-// 	short body_len = 0;
-	
-// //	printf("Tips:	OneNet_SendData-MQTT\r\n");
-	
-// 	memset(buf, 0, sizeof(buf));
-	
-// 	body_len = OneNet_FillBuf(buf);																	//获取当前需要发送的数据流的总长度
-
-// 	if(body_len)
-// 	{
-// 		if(MQTT_PacketSaveData(PROID, DEVICE_NAME, body_len, NULL, &mqttPacket) == 0)				//封包
-// 		{
-// 			memcpy(&mqttPacket._data[mqttPacket._len], buf, body_len);
-// 			mqttPacket._len += body_len;
-			
-// 			ESP8266_SendData(mqttPacket._data, mqttPacket._len);									//上传数据到平台
-// //			printf("Send %d Bytes\r\n", mqttPacket._len);
-			
-// 			MQTT_DeleteBuffer(&mqttPacket);															//删包
-// 		}
-// 		else
-// 			printf("WARN:	EDP_NewBuffer Failed\r\n");
-// 	}
-	
-// }
 extern system_data_t comm_data;
-unsigned char OneNet_FillBuf(char *buf)
+uint8 OneNet_FillBuf_1(char *buf)
 {
-    char text[48];
+    char text[64];
+    alarm_threshold_t threshold;
 
     memset(text, 0, sizeof(text));
+    SafetyService_GetThreshold(&threshold);
 
     strcpy(buf, "{\"id\":\"123\",\"params\":{");
 
@@ -431,11 +402,74 @@ unsigned char OneNet_FillBuf(char *buf)
     strcat(buf, text);
 
     memset(text, 0, sizeof(text));
+    sprintf(text, "\"Temp\":{\"value\":%d},", comm_data.temperature);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"Humi\":{\"value\":%d},", comm_data.humidity);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
     sprintf(text, "\"TrackState\":{\"value\":%d},", comm_data.track_state);
     strcat(buf, text);
 
     memset(text, 0, sizeof(text));
-    sprintf(text, "\"SymState\":{\"value\":%d}", comm_data.system_state);
+    sprintf(text, "\"SymState\":{\"value\":%d},", comm_data.system_state);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"VolLowWarn\":{\"value\":%.3f},", threshold.voltage_low_warning);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"VolHighWarn\":{\"value\":%.3f}", threshold.voltage_high_warning);
+    strcat(buf, text);
+
+    strcat(buf, "}}");
+
+    return strlen(buf);
+}
+
+uint8 OneNet_FillBuf_2(char *buf)
+{
+    char text[64];
+    alarm_threshold_t threshold;
+
+    memset(text, 0, sizeof(text));
+    SafetyService_GetThreshold(&threshold);
+
+    strcpy(buf, "{\"id\":\"123\",\"params\":{");
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"CurHighWarn\":{\"value\":%.3f},", threshold.current_high_warning);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"TempHighWarn\":{\"value\":%d},", threshold.temp_high_warning);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"HumiLowWarn\":{\"value\":%d},", threshold.humi_low_warning);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"HumiHighWarn\":{\"value\":%d},", threshold.humi_high_warning);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"VolHyst\":{\"value\":%.2f},", threshold.vol_hysteresis);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"CurHyst\":{\"value\":%.2f},", threshold.cur_hysteresis);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"TempHyst\":{\"value\":%d},", threshold.temp_hysteresis);
+    strcat(buf, text);
+
+    memset(text, 0, sizeof(text));
+    sprintf(text, "\"HumiHyst\":{\"value\":%d}", threshold.humi_hysteresis);
     strcat(buf, text);
 
     strcat(buf, "}}");
@@ -446,14 +480,27 @@ unsigned char OneNet_FillBuf(char *buf)
 int OneNet_SendData(void)
 {
     MQTT_PACKET_STRUCTURE mqttPacket = {NULL, 0, 0, 0};
-    char buf[256];
+    char buf[512];
     short body_len;
+    static uint8_t upload_index = 0;
 
     memset(buf, 0, sizeof(buf));
+    
+    if(upload_index == 0)
+    {
+        body_len = OneNet_FillBuf_1(buf);
+        upload_index = 1;
+    }
+    else
+    {
+        body_len = OneNet_FillBuf_2(buf);
+        upload_index = 0;
+    }
 
-    body_len = OneNet_FillBuf(buf);
     if(body_len <= 0)
         return 1;
+
+    printf("MQTT JSON: %s\r\n", buf);
 
     if(MQTT_PacketSaveData(PROID, DEVICE_NAME, body_len, NULL, &mqttPacket) != 0)
         return 1;
@@ -490,7 +537,7 @@ void OneNET_Publish(const char *topic, const char *msg)
     printf("Publish Topic: %s, Msg: %s\r\n", topic, msg);
 
     if(MQTT_PacketPublish(MQTT_PUBLISH_ID, topic, msg, strlen(msg),
-                          MQTT_QOS_LEVEL0, 0, 1, &mqtt_packet) == 0)
+                          MQTT_QOS_LEVEL0, 0, 0, &mqtt_packet) == 0)
     {
         if(ESP8266_SendData(mqtt_packet._data, mqtt_packet._len) != 0)
         {
@@ -533,6 +580,330 @@ void OneNET_Subscribe(void)
     }
 }
 
+static int OneNet_GetNumberFromParam(cJSON *params, const char *key, float *out_val)
+{
+    cJSON *item = NULL;
+    cJSON *value = NULL;
+
+    if(params == NULL || key == NULL || out_val == NULL)
+        return -1;
+
+    item = cJSON_GetObjectItem(params, key);
+    if(item == NULL)
+        return -1;
+
+    /* 情况1：平台直接下发数字，如 "CurHighWarn": 7 */
+    if(item->type == cJSON_Number)
+    {
+        *out_val = (float)item->valuedouble;
+        return 0;
+    }
+
+    /* 情况2：平台下发对象，如 "CurHighWarn": {"value":7} */
+    value = cJSON_GetObjectItem(item, "value");
+    if(value != NULL && value->type == cJSON_Number)
+    {
+        *out_val = (float)value->valuedouble;
+        return 0;
+    }
+
+    return -1;
+}
+
+// static void OneNet_ParseThresholdParams(cJSON *params)
+// {
+//     cJSON *item = NULL;
+//     cJSON *value = NULL;
+
+//     alarm_threshold_t threshold;
+//     uint8_t threshold_changed = 0;
+
+//     if(params == NULL)
+//         return;
+
+//     SafetyService_GetThreshold(&threshold);
+
+//     item = cJSON_GetObjectItem(params, "VolLowWarn");
+//     if(item)
+//     {
+//         value = cJSON_GetObjectItem(item, "value");
+//         if(value && value->type == cJSON_Number)
+//         {
+//             threshold.voltage_low_warning = (float)value->valuedouble;
+//             threshold_changed = 1;
+//             printf("Set VolLowWarn = %.3f\r\n", threshold.voltage_low_warning);
+//         }
+//     }
+
+//     item = cJSON_GetObjectItem(params, "VolHighWarn");
+//     if(item)
+//     {
+//         value = cJSON_GetObjectItem(item, "value");
+//         if(value && value->type == cJSON_Number)
+//         {
+//             threshold.voltage_high_warning = (float)value->valuedouble;
+//             threshold_changed = 1;
+//             printf("Set VolHighWarn = %.3f\r\n", threshold.voltage_high_warning);
+//         }
+//     }
+
+//     item = cJSON_GetObjectItem(params, "CurHighWarn");
+//     if(item)
+//     {
+//         value = cJSON_GetObjectItem(item, "value");
+//         if(value && value->type == cJSON_Number)
+//         {
+//             threshold.current_high_warning = (float)value->valuedouble;
+//             threshold_changed = 1;
+//             printf("Set CurHighWarn = %.3f\r\n", threshold.current_high_warning);
+//         }
+//     }
+
+//     item = cJSON_GetObjectItem(params, "TempHighWarn");
+//     if(item)
+//     {
+//         value = cJSON_GetObjectItem(item, "value");
+//         if(value && value->type == cJSON_Number)
+//         {
+//             threshold.temp_high_warning = (float)value->valuedouble;
+//             threshold_changed = 1;
+//             printf("Set TempHighWarn = %d\r\n", threshold.temp_high_warning);
+//         }
+//     }
+
+//     item = cJSON_GetObjectItem(params, "HumiLowWarn");
+//     if(item)
+//     {
+//         value = cJSON_GetObjectItem(item, "value");
+//         if(value && value->type == cJSON_Number)
+//         {
+//             threshold.humi_low_warning = (float)value->valuedouble;
+//             threshold_changed = 1;
+//             printf("Set HumiLowWarn = %d\r\n", threshold.humi_low_warning);
+//         }
+//     }
+
+//     item = cJSON_GetObjectItem(params, "HumiHighWarn");
+//     if(item)
+//     {
+//         value = cJSON_GetObjectItem(item, "value");
+//         if(value && value->type == cJSON_Number)
+//         {
+//             threshold.humi_high_warning = (float)value->valuedouble;
+//             threshold_changed = 1;
+//             printf("Set HumiHighWarn = %d\r\n", threshold.humi_high_warning);
+//         }
+//     }
+
+//     item = cJSON_GetObjectItem(params, "VolHyst");
+//     if(item)
+//     {
+//         value = cJSON_GetObjectItem(item, "value");
+//         if(value && value->type == cJSON_Number)
+//         {
+//             threshold.vol_hysteresis = (float)value->valuedouble;
+//             threshold_changed = 1;
+//             printf("Set VolHyst = %.2f\r\n", threshold.vol_hysteresis);
+//         }
+//     }
+
+//     item = cJSON_GetObjectItem(params, "CurHyst");
+//     if(item)
+//     {
+//         value = cJSON_GetObjectItem(item, "value");
+//         if(value && value->type == cJSON_Number)
+//         {
+//             threshold.cur_hysteresis = (float)value->valuedouble;
+//             threshold_changed = 1;
+//             printf("Set CurHyst = %.2f\r\n", threshold.cur_hysteresis);
+//         }
+//     }
+
+//     item = cJSON_GetObjectItem(params, "TempHyst");
+//     if(item)
+//     {
+//         value = cJSON_GetObjectItem(item, "value");
+//         if(value && value->type == cJSON_Number)
+//         {
+//             threshold.temp_hysteresis = (float)value->valuedouble;
+//             threshold_changed = 1;
+//             printf("Set TempHyst = %d\r\n", threshold.temp_hysteresis);
+//         }
+//     }
+
+//     item = cJSON_GetObjectItem(params, "HumiHyst");
+//     if(item)
+//     {
+//         value = cJSON_GetObjectItem(item, "value");
+//         if(value && value->type == cJSON_Number)
+//         {
+//             threshold.humi_hysteresis = (float)value->valuedouble;
+//             threshold_changed = 1;
+//             printf("Set HumiHyst = %d\r\n", threshold.humi_hysteresis);
+//         }
+//     }
+
+//     if(threshold_changed)
+//     {
+//         SafetyService_SetThreshold(&threshold);
+//         printf("Threshold updated from cloud\r\n");
+//     }
+// }
+
+static void OneNet_ParseThresholdParams(cJSON *params)
+{
+    alarm_threshold_t threshold;
+    uint8_t threshold_changed = 0;
+    float val = 0.0f;
+
+    if(params == NULL)
+        return;
+
+    SafetyService_GetThreshold(&threshold);
+
+    if(OneNet_GetNumberFromParam(params, "VolLowWarn", &val) == 0)
+    {
+        threshold.voltage_low_warning = val;
+        threshold_changed = 1;
+        printf("Set VolLowWarn = %.2f\r\n", threshold.voltage_low_warning);
+    }
+
+    if(OneNet_GetNumberFromParam(params, "VolHighWarn", &val) == 0)
+    {
+        threshold.voltage_high_warning = val;
+        threshold_changed = 1;
+        printf("Set VolHighWarn = %.2f\r\n", threshold.voltage_high_warning);
+    }
+
+    if(OneNet_GetNumberFromParam(params, "CurHighWarn", &val) == 0)
+    {
+        threshold.current_high_warning = val;
+        threshold_changed = 1;
+        printf("Set CurHighWarn = %.2f\r\n", threshold.current_high_warning);
+    }
+
+    if(OneNet_GetNumberFromParam(params, "TempHighWarn", &val) == 0)
+    {
+        threshold.temp_high_warning = val;
+        threshold_changed = 1;
+        printf("Set TempHighWarn = %d\r\n", threshold.temp_high_warning);
+    }
+
+    if(OneNet_GetNumberFromParam(params, "HumiLowWarn", &val) == 0)
+    {
+        threshold.humi_low_warning = val;
+        threshold_changed = 1;
+        printf("Set HumiLowWarn = %d\r\n", threshold.humi_low_warning);
+    }
+
+    if(OneNet_GetNumberFromParam(params, "HumiHighWarn", &val) == 0)
+    {
+        threshold.humi_high_warning = val;
+        threshold_changed = 1;
+        printf("Set HumiHighWarn = %d\r\n", threshold.humi_high_warning);
+    }
+
+    if(OneNet_GetNumberFromParam(params, "VolHyst", &val) == 0)
+    {
+        threshold.vol_hysteresis = val;
+        threshold_changed = 1;
+        printf("Set VolHyst = %.2f\r\n", threshold.vol_hysteresis);
+    }
+
+    if(OneNet_GetNumberFromParam(params, "CurHyst", &val) == 0)
+    {
+        threshold.cur_hysteresis = val;
+        threshold_changed = 1;
+        printf("Set CurHyst = %.2f\r\n", threshold.cur_hysteresis);
+    }
+
+    if(OneNet_GetNumberFromParam(params, "TempHyst", &val) == 0)
+    {
+        threshold.temp_hysteresis = val;
+        threshold_changed = 1;
+        printf("Set TempHyst = %d\r\n", threshold.temp_hysteresis);
+    }
+
+    if(OneNet_GetNumberFromParam(params, "HumiHyst", &val) == 0)
+    {
+        threshold.humi_hysteresis = val;
+        threshold_changed = 1;
+        printf("Set HumiHyst = %d\r\n", threshold.humi_hysteresis);
+    }
+
+    if(threshold_changed)
+    {
+        SafetyService_SetThreshold(&threshold);
+        printf("Threshold updated from cloud\r\n");
+    }
+}
+
+static void OneNET_SetReply(cJSON *id_item, int code)
+{
+    MQTT_PACKET_STRUCTURE mqtt_packet = {NULL, 0, 0, 0};
+    char topic_buf[64];
+    char msg_buf[64];
+    static uint16_t reply_pkt_id = 1;
+    int ret;
+
+    if(id_item == NULL)
+        return;
+
+    snprintf(topic_buf, sizeof(topic_buf),
+             "$sys/%s/%s/thing/property/set_reply",
+             PROID, DEVICE_NAME);
+
+    /* 同时兼容 string 和 number 两种 id */
+    if(id_item->type == cJSON_String && id_item->valuestring != NULL)
+    {
+        snprintf(msg_buf, sizeof(msg_buf),
+                 "{\"id\":\"%s\",\"code\":%d}",
+                 id_item->valuestring, code);
+    }
+    else if(id_item->type == cJSON_Number)
+    {
+        snprintf(msg_buf, sizeof(msg_buf),
+                 "{\"id\":%d,\"code\":%d}",
+                 id_item->valueint, code);
+    }
+    else
+    {
+        printf("WARN:\tset_reply id type invalid\r\n");
+        return;
+    }
+
+    printf("SetReply Topic: %s\r\n", topic_buf);
+    printf("SetReply Msg  : %s\r\n", msg_buf);
+
+    /* 先用 QoS0，保持最简单，避免 QoS1/packet id 干扰排查 */
+    ret = MQTT_PacketPublish(reply_pkt_id++,
+                             topic_buf,
+                             msg_buf,
+                             strlen(msg_buf),
+                             MQTT_QOS_LEVEL0,
+                             0,
+                             0,
+                             &mqtt_packet);
+
+    if(ret == 0)
+    {
+        if(ESP8266_SendData(mqtt_packet._data, mqtt_packet._len) != 0)
+        {
+            printf("WARN:\tSetReply send failed\r\n");
+        }
+        else
+        {
+            printf("SetReply send ok\r\n");
+        }
+
+        MQTT_DeleteBuffer(&mqtt_packet);
+    }
+    else
+    {
+        printf("WARN:\tMQTT_PacketPublish set_reply failed\r\n");
+    }
+}
+
 //==========================================================
 //	函数名称：	OneNet_RevPro
 //
@@ -548,9 +919,6 @@ void OneNet_RevPro(unsigned char *cmd)
 {
     char *req_payload = NULL;
     char *cmdid_topic = NULL;
-
-    char reply_topic[48];
-    char reply_msg[48];
 
     unsigned short topic_len = 0;
     unsigned short req_len = 0;
@@ -569,6 +937,7 @@ void OneNet_RevPro(unsigned char *cmd)
         case MQTT_PKT_PUBLISH:
         {
             cJSON *id_item = NULL;
+            cJSON *params = NULL;
 
             result = MQTT_UnPacketPublish(cmd,
                                           &cmdid_topic,
@@ -587,20 +956,14 @@ void OneNet_RevPro(unsigned char *cmd)
                 if(raw_json != NULL)
                 {
                     id_item = cJSON_GetObjectItem(raw_json, "id");
+                    params  = cJSON_GetObjectItem(raw_json, "params");
 
-                    snprintf(reply_topic, sizeof(reply_topic),
-                             "$sys/%s/%s/thing/property/set_reply",
-                             PROID, DEVICE_NAME);
+                    /* 单独函数处理阈值下发 */
+                    OneNet_ParseThresholdParams(params);
 
-                    if(id_item != NULL &&
-                       id_item->type == cJSON_String &&
-                       id_item->valuestring != NULL)
+                    if(id_item != NULL)
                     {
-                        snprintf(reply_msg, sizeof(reply_msg),
-                                 "{\"id\":\"%s\",\"code\":200,\"msg\":\"success\"}",
-                                 id_item->valuestring);
-
-                        OneNET_Publish(reply_topic, reply_msg);
+                        OneNET_SetReply(id_item, 200);
                     }
                     else
                     {

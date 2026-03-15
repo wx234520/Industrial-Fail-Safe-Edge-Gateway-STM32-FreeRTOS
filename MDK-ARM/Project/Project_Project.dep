@@ -1,5 +1,5 @@
 Dependencies for Project 'Project', Target 'Project': (DO NOT MODIFY !)
-F (startup_stm32f103xb.s)(0x69B5302B)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1" -I ../Core/Inc-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include--pd "__UVISION_VERSION SETA 524" --pd "_RTE_ SETA 1" --pd "STM32F10X_MD SETA 1"--list startup_stm32f103xb.lst --xref -o project\startup_stm32f103xb.o --depend project\startup_stm32f103xb.d)
+F (startup_stm32f103xb.s)(0x69B65A17)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1" -I ../Core/Inc-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include--pd "__UVISION_VERSION SETA 524" --pd "_RTE_ SETA 1" --pd "STM32F10X_MD SETA 1"--list startup_stm32f103xb.lst --xref -o project\startup_stm32f103xb.o --depend project\startup_stm32f103xb.d)
 F (../Core/Src/main.c)(0x69AFC540)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\main.o --omf_browse project\main.crf --depend project\main.d)
 I (../Core/Inc/main.h)(0x69AA3756)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x699C2E07)
@@ -50,7 +50,7 @@ I (../Core/Inc/tim.h)(0x69AA8EEE)
 I (../Core/Inc/usart.h)(0x69AE8562)
 I (../Core/Inc/gpio.h)(0x69AA3755)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdio.h)(0x588B8344)
-F (../Core/Src/gpio.c)(0x69B158E9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\gpio.o --omf_browse project\gpio.crf --depend project\gpio.d)
+F (../Core/Src/gpio.c)(0x69B65A13)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\gpio.o --omf_browse project\gpio.crf --depend project\gpio.d)
 I (../Core/Inc/gpio.h)(0x69AA3755)
 I (../Core/Inc/main.h)(0x69AA3756)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x699C2E07)
@@ -84,7 +84,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x699C2E07)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x699C2E07)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x699C2E07)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x699C2E07)
-F (../Core/Src/freertos.c)(0x69B617FA)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\freertos.o --omf_browse project\freertos.crf --depend project\freertos.d)
+F (../Core/Src/freertos.c)(0x69B657C3)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\freertos.o --omf_browse project\freertos.crf --depend project\freertos.d)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x699C2DFF)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stddef.h)(0x588B8344)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdint.h)(0x588B8344)
@@ -128,11 +128,11 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x699C2E07)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x699C2E07)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x699C2DFF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h)(0x699C2DFF)
-I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x699C2DFF)
 I (../Drivers/MCU-F103/driver_oled.h)(0x699183AA)
 I (../App/FreeRTOS/Tasks/driver_led.h)(0x69AD14A6)
 I (../Drivers/MCU-F103/driver_buzzer.h)(0x69ACED48)
-I (../Drivers/MCU-F103/typedefs.h)(0x69B6135C)
+I (../Drivers/MCU-F103/driver_dht11.h)(0x64CC4C6C)
+I (../Config/typedefs.h)(0x69B66FC3)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdbool.h)(0x588B8344)
 I (../App/FreeRTOS/Tasks/sensor_task.h)(0x69AB0F4D)
 I (../App/FreeRTOS/Tasks/process_task.h)(0x69AB96F1)
@@ -141,6 +141,7 @@ I (../App/FreeRTOS/Tasks/watchdog_task.h)(0x69AE356D)
 I (../Service/watchdog_service.h)(0x69B61A71)
 I (../App/FreeRTOS/Tasks/safety_task.h)(0x69ABC180)
 I (../App/FreeRTOS/Tasks/comm_task.h)(0x69B22334)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x699C2DFF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x699C2DFF)
 F (../Core/Src/adc.c)(0x69AA8EEE)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\adc.o --omf_browse project\adc.crf --depend project\adc.d)
 I (../Core/Inc/adc.h)(0x69AA4B07)
@@ -1209,39 +1210,6 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3/portmacro.h)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h)(0x699C2DFF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x699C2DFF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x699C2DFF)
-F (..\Drivers\MCU-F103\driver_timer.c)(0x69AF8439)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\driver_timer.o --omf_browse project\driver_timer.crf --depend project\driver_timer.d)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x699C2E07)
-I (../Core/Inc/stm32f1xx_hal_conf.h)(0x69AE2E16)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x699C2E07)
-I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x699C2E07)
-I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h)(0x699C2E07)
-I (../Drivers/CMSIS/Include/core_cm3.h)(0x699C2DFF)
-I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdint.h)(0x588B8344)
-I (../Drivers/CMSIS/Include/cmsis_version.h)(0x699C2DFF)
-I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x699C2DFF)
-I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x699C2DFF)
-I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h)(0x699C2E07)
-I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stddef.h)(0x588B8344)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_exti.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc_ex.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_iwdg.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x699C2E07)
-I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x699C2E07)
-F (..\Drivers\MCU-F103\driver_timer.h)(0x69AF8439)()
 F (..\Drivers\MCU-F103\driver_oled.c)(0x69AA80D7)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\driver_oled.o --omf_browse project\driver_oled.crf --depend project\driver_oled.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x699C2E07)
 I (../Core/Inc/stm32f1xx_hal_conf.h)(0x69AE2E16)
@@ -1311,7 +1279,6 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x699C2E07)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x699C2E07)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x699C2E07)
 F (..\Drivers\MCU-F103\driver_adc.h)(0x69AB0D14)()
-F (..\Drivers\MCU-F103\typedefs.h)(0x69B6135C)()
 F (..\App\FreeRTOS\Tasks\driver_led.c)(0x69AD14A6)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\driver_led.o --omf_browse project\driver_led.crf --depend project\driver_led.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x699C2E07)
 I (../Core/Inc/stm32f1xx_hal_conf.h)(0x69AE2E16)
@@ -1387,26 +1354,107 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x699C2E07)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x699C2E07)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x699C2E07)
 F (..\Drivers\MCU-F103\driver_buzzer.h)(0x69ACED48)()
-F (..\Service\sensor_service.c)(0x69AE356D)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\sensor_service.o --omf_browse project\sensor_service.crf --depend project\sensor_service.d)
+F (..\Drivers\MCU-F103\driver_dht11.c)(0x69B65F47)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\driver_dht11.o --omf_browse project\driver_dht11.crf --depend project\driver_dht11.d)
+I (..\Drivers\MCU-F103\driver_dht11.h)(0x64CC4C6C)
+I (..\Drivers\MCU-F103\driver_timer.h)(0x64CC9397)
+I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdint.h)(0x588B8344)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x699C2E07)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x69AE2E16)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x699C2E07)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x699C2E07)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h)(0x699C2E07)
+I (../Drivers/CMSIS/Include/core_cm3.h)(0x699C2DFF)
+I (../Drivers/CMSIS/Include/cmsis_version.h)(0x699C2DFF)
+I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x699C2DFF)
+I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x699C2DFF)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h)(0x699C2E07)
+I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stddef.h)(0x588B8344)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_exti.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc_ex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_iwdg.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x699C2E07)
+F (..\Drivers\MCU-F103\driver_dht11.h)(0x64CC4C6C)()
+F (..\Drivers\MCU-F103\driver_timer.c)(0x69B65F47)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\driver_timer.o --omf_browse project\driver_timer.crf --depend project\driver_timer.d)
+I (..\Drivers\MCU-F103\driver_timer.h)(0x64CC9397)
+I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdint.h)(0x588B8344)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x699C2E07)
+I (../Core/Inc/stm32f1xx_hal_conf.h)(0x69AE2E16)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h)(0x699C2E07)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x699C2E07)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h)(0x699C2E07)
+I (../Drivers/CMSIS/Include/core_cm3.h)(0x699C2DFF)
+I (../Drivers/CMSIS/Include/cmsis_version.h)(0x699C2DFF)
+I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x699C2DFF)
+I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x699C2DFF)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h)(0x699C2E07)
+I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stddef.h)(0x588B8344)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_exti.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc_ex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_iwdg.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x699C2E07)
+I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x699C2E07)
+F (..\Drivers\MCU-F103\driver_timer.h)(0x64CC9397)()
+F (..\Service\sensor_service.c)(0x69B65F47)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\sensor_service.o --omf_browse project\sensor_service.crf --depend project\sensor_service.d)
 I (../Drivers/MCU-F103/driver_adc.h)(0x69AB0D14)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdint.h)(0x588B8344)
-I (../Drivers/MCU-F103/typedefs.h)(0x69B6135C)
+I (../Drivers/MCU-F103/driver_dht11.h)(0x64CC4C6C)
+I (../Config/typedefs.h)(0x69B66FC3)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdbool.h)(0x588B8344)
-I (../Config/system_config.h)(0x69B61732)
+I (../Config/system_config.h)(0x69B66FC3)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x699C2DFF)
+I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stddef.h)(0x588B8344)
+I (../Core/Inc/FreeRTOSConfig.h)(0x69B53029)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h)(0x699C2DFF)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h)(0x699C2DFF)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h)(0x699C2DFF)
+I (../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3/portmacro.h)(0x699C2DFF)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h)(0x699C2DFF)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x699C2DFF)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x699C2DFF)
 F (..\Service\sensor_service.h)(0x69AB0E1D)()
-F (..\Service\safety_service.c)(0x69AE356D)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\safety_service.o --omf_browse project\safety_service.crf --depend project\safety_service.d)
-I (..\Service\safety_service.h)(0x69AE259D)
-I (../Drivers/MCU-F103/typedefs.h)(0x69B6135C)
+F (..\Service\safety_service.c)(0x69B67D21)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\safety_service.o --omf_browse project\safety_service.crf --depend project\safety_service.d)
+I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdio.h)(0x588B8344)
+I (..\Service\safety_service.h)(0x69B67D21)
+I (../Config/typedefs.h)(0x69B66FC3)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdbool.h)(0x588B8344)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdint.h)(0x588B8344)
 I (../App/FreeRTOS/Tasks/driver_led.h)(0x69AD14A6)
 I (../Drivers/MCU-F103/driver_buzzer.h)(0x69ACED48)
-I (../Config/system_config.h)(0x69B61732)
-F (..\Service\safety_service.h)(0x69AE259D)()
-F (..\Service\watchdog_service.c)(0x69B61A71)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\watchdog_service.o --omf_browse project\watchdog_service.crf --depend project\watchdog_service.d)
+I (../Config/system_config.h)(0x69B66FC3)
+F (..\Service\safety_service.h)(0x69B67D21)()
+F (..\Service\watchdog_service.c)(0x69B6262E)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\watchdog_service.o --omf_browse project\watchdog_service.crf --depend project\watchdog_service.d)
 I (..\Service\watchdog_service.h)(0x69B61A71)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdint.h)(0x588B8344)
-I (../Drivers/MCU-F103/typedefs.h)(0x69B6135C)
+I (../Config/typedefs.h)(0x69B66FC3)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdbool.h)(0x588B8344)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 F (..\Service\watchdog_service.h)(0x69B61A71)()
@@ -1424,7 +1472,7 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x699C2DFF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x699C2DFF)
 I (../Drivers/MCU-F103/driver_adc.h)(0x69AB0D14)
 I (../Service/sensor_service.h)(0x69AB0E1D)
-I (../Drivers/MCU-F103/typedefs.h)(0x69B6135C)
+I (../Config/typedefs.h)(0x69B66FC3)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdbool.h)(0x588B8344)
 I (../Service/watchdog_service.h)(0x69B61A71)
 F (..\App\FreeRTOS\Tasks\sensor_task.h)(0x69AB0F4D)()
@@ -1442,12 +1490,12 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x699C2DFF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x699C2DFF)
 I (../Drivers/MCU-F103/driver_oled.h)(0x699183AA)
 I (../Service/sensor_service.h)(0x69AB0E1D)
-I (../Drivers/MCU-F103/typedefs.h)(0x69B6135C)
+I (../Config/typedefs.h)(0x69B66FC3)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdbool.h)(0x588B8344)
 I (../Service/watchdog_service.h)(0x69B61A71)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x699C2DFF)
 F (..\App\FreeRTOS\Tasks\display_task.h)(0x69AB1056)()
-F (..\App\FreeRTOS\Tasks\process_task.c)(0x69B617FA)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\process_task.o --omf_browse project\process_task.crf --depend project\process_task.d)
+F (..\App\FreeRTOS\Tasks\process_task.c)(0x69B66730)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\process_task.o --omf_browse project\process_task.crf --depend project\process_task.d)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x699C2DFF)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stddef.h)(0x588B8344)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdint.h)(0x588B8344)
@@ -1460,7 +1508,7 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h)(0x699C2DFF
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x699C2DFF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x699C2DFF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x699C2DFF)
-I (../Drivers/MCU-F103/typedefs.h)(0x69B6135C)
+I (../Config/typedefs.h)(0x69B66FC3)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdbool.h)(0x588B8344)
 I (../Service/sensor_service.h)(0x69AB0E1D)
 I (../Service/watchdog_service.h)(0x69B61A71)
@@ -1477,10 +1525,10 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3/portmacro.h)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h)(0x699C2DFF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x699C2DFF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x699C2DFF)
-I (../Drivers/MCU-F103/typedefs.h)(0x69B6135C)
+I (../Config/typedefs.h)(0x69B66FC3)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdbool.h)(0x588B8344)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x699C2DFF)
-I (../Service/safety_service.h)(0x69AE259D)
+I (../Service/safety_service.h)(0x69B67D21)
 I (../Service/watchdog_service.h)(0x69B61A71)
 F (..\App\FreeRTOS\Tasks\safety_task.h)(0x69ABC180)()
 F (..\App\FreeRTOS\Tasks\watchdog_task.c)(0x69AE94D8)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\watchdog_task.o --omf_browse project\watchdog_task.crf --depend project\watchdog_task.d)
@@ -1525,11 +1573,11 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x699C2E07)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x699C2E07)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x699C2E07)
 I (../Service/watchdog_service.h)(0x69B61A71)
-I (../Drivers/MCU-F103/typedefs.h)(0x69B6135C)
+I (../Config/typedefs.h)(0x69B66FC3)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdbool.h)(0x588B8344)
-I (../Config/system_config.h)(0x69B61732)
+I (../Config/system_config.h)(0x69B66FC3)
 F (..\App\FreeRTOS\Tasks\watchdog_task.h)(0x69AE356D)()
-F (..\App\FreeRTOS\Tasks\comm_task.c)(0x69B61A71)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\comm_task.o --omf_browse project\comm_task.crf --depend project\comm_task.d)
+F (..\App\FreeRTOS\Tasks\comm_task.c)(0x69B691E5)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\comm_task.o --omf_browse project\comm_task.crf --depend project\comm_task.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x699C2E07)
 I (../Core/Inc/stm32f1xx_hal_conf.h)(0x69AE2E16)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h)(0x699C2E07)
@@ -1572,7 +1620,7 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x699C2DFF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x699C2DFF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x699C2DFF)
 I (../Service/watchdog_service.h)(0x69B61A71)
-I (../Drivers/MCU-F103/typedefs.h)(0x69B6135C)
+I (../Config/typedefs.h)(0x69B66FC3)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdbool.h)(0x588B8344)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdio.h)(0x588B8344)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
@@ -1693,7 +1741,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x699C2E07)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x699C2E07)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x699C2E07)
 F (..\Net\onenet\hmac_sha1.h)(0x650FD6B4)()
-F (..\Net\onenet\onenet.c)(0x69B54C03)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\onenet.o --omf_browse project\onenet.crf --depend project\onenet.d)
+F (..\Net\onenet\onenet.c)(0x69B6A75E)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3 -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/MCU-F103 -I ../Service -I ../App/FreeRTOS/Tasks -I ../Config -I ../Net/CJSON -I ../Net/Device -I ../Net/MQTT -I ../Net/onenet-I.\RTE\_Project-IE:\EmbeddedSystem\Keil5\ARM\CMSIS\5.0.1\CMSIS\Include-IE:\EmbeddedSystem\Keil5\Keil\STM32F1xx_DFP\2.4.0\Device\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o project\onenet.o --omf_browse project\onenet.crf --depend project\onenet.d)
 I (../Core/Inc/main.h)(0x69AA3756)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x699C2E07)
 I (../Core/Inc/stm32f1xx_hal_conf.h)(0x69AE2E16)
@@ -1743,10 +1791,12 @@ I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (..\Net\onenet\base64.h)(0x5D428E84)
 I (..\Net\onenet\hmac_sha1.h)(0x650FD6B4)
 I (../Core/Inc/usart.h)(0x69AE8562)
-I (../Drivers/MCU-F103/typedefs.h)(0x69B6135C)
+I (../Config/typedefs.h)(0x69B66FC3)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdbool.h)(0x588B8344)
+I (../Service/safety_service.h)(0x69B67D21)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (E:\EmbeddedSystem\Keil5\ARM\ARMCC\include\stdio.h)(0x588B8344)
 I (../Net/CJSON/cJSON.h)(0x54DE4822)
 F (..\Net\onenet\onenet.h)(0x69B544E0)()
-F (..\Config\system_config.h)(0x69B61732)()
+F (..\Config\system_config.h)(0x69B66FC3)()
+F (..\Config\typedefs.h)(0x69B66FC3)()

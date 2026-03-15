@@ -21,6 +21,9 @@ void ProcessTask(void *argument)
         g_process_data.voltage = g_sensor.voltage;
         g_process_data.current = g_sensor.current;
         g_process_data.track_state = g_sensor.track_occupied;
+        g_process_data.temperature = g_sensor.temperature;
+        g_process_data.humidity = g_sensor.humidity;
+        g_process_data.dht11_valid = g_sensor.dht11_valid;
 
         //xQueueSend(SafeQueue, &g_process_data, portMAX_DELAY);
         xQueueOverwrite(SafeQueue, &g_process_data);

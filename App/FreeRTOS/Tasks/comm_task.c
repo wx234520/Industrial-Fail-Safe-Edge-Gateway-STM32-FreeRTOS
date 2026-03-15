@@ -135,10 +135,13 @@ void CommTask(void *argument)
             //        comm_data.voltage, 
             //        comm_data.current, 
             //        comm_data.track_state, 
-            //        comm_data.system_state); 
+            //        comm_data.temperature,
+            //        comm_data.humidity,
+            //        comm_data.system_state
+            //     ); 
         } 
         
-        if(xTaskGetTickCount() - lastSend >= pdMS_TO_TICKS(10000))
+        if(xTaskGetTickCount() - lastSend >= pdMS_TO_TICKS(5000))
         { 
             printf("Upload MQTT\r\n"); 
 

@@ -25,11 +25,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "queue.h"
 #include "driver_oled.h"
 #include "driver_led.h"
 #include "driver_buzzer.h"
+#include "driver_dht11.h"
 #include "typedefs.h"
+
 #include "sensor_task.h"
 #include "process_task.h"
 #include "display_task.h"
@@ -37,6 +38,8 @@
 #include "watchdog_service.h"
 #include "safety_task.h"
 #include "comm_task.h"
+
+#include "queue.h"
 #include "semphr.h"
 /* USER CODE END Includes */
 
@@ -97,6 +100,7 @@ void MX_FREERTOS_Init(void) {
   OLED_Init();
   LED_Init();
   Buzzer_Init();
+  DHT11_Init();
   Watchdog_Init();
   /* USER CODE END Init */
 

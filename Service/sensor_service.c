@@ -1,6 +1,9 @@
 #include "driver_adc.h"
+#include "driver_dht11.h"
 #include "typedefs.h"
 #include "system_config.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 sensor_data_t g_sensor;
 
@@ -39,10 +42,39 @@ bool Sensor_IsTrackOccupied(const sensor_data_t *data)
 
 void sensor_update(void)
 {
+    static TickType_t last_dht_tick = 0;
+    TickType_t now;
+    int hum, temp;
+
+    /* 1. 高频更新 ADC 数据 */
     g_sensor.raw_light = ADC_GetRaw(2); // Assuming light sensor is connected to channel 2
     g_sensor.filtered_light = light_filter(g_sensor.raw_light);
 
     g_sensor.voltage = ADC_GetRaw(0) * 30.0f / 4095.0f; // Assuming a 12-bit ADC and a reference voltage of 3.3V
     g_sensor.current = ADC_GetRaw(1) * 5.0f / 4095.0f; // Assuming a 12-bit ADC and a reference voltage of 3.3V
     g_sensor.track_occupied = Sensor_IsTrackOccupied(&g_sensor); // Assuming a 12-bit ADC and a reference voltage of 3.3V
+
+    /* 2. 低频更新 DHT11，每 2 秒一次 */
+    now = xTaskGetTickCount();
+    if((now - last_dht_tick) >= pdMS_TO_TICKS(2000))
+    {
+        /*
+         * DHT11 时序敏感，建议避免任务切换干扰
+         * 这里用挂起调度器的方式即可
+         */
+        vTaskSuspendAll();
+        if(DHT11_Read(&hum, &temp) == 0)
+        {
+            g_sensor.humidity = hum;
+            g_sensor.temperature = temp;
+            g_sensor.dht11_valid = true;
+        }
+        else
+        {
+            g_sensor.dht11_valid = false;
+        }
+        xTaskResumeAll();
+
+        last_dht_tick = now;
+    }
 }
