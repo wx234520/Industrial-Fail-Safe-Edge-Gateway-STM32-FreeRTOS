@@ -17,6 +17,9 @@ void DisplayTask(void *argument)
     OLED_ShowString(3, 1, "Track:");
     OLED_ShowString(4, 1, "State:");
 
+    Watchdog_Register(WD_DISPLAY);
+    Watchdog_Feed(WD_DISPLAY);
+
     for(;;)
     {   
         if(xQueueReceive(DisplayQueue, &display_data, portMAX_DELAY) == pdPASS)

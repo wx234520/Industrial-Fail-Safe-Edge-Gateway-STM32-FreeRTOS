@@ -98,6 +98,11 @@ static void ESP8266_RxRestart(void)
     __HAL_DMA_DISABLE_IT(huart1.hdmarx, DMA_IT_HT);
 }
 
+void ESP8266_Clear(void)
+{
+    ESP8266_RxRestart();
+}
+
 int ESP8266_Read(uint8_t *buf, int maxlen)
 {
     int i = 0;
@@ -181,11 +186,6 @@ _Bool ESP8266_WaitIpReady(uint32_t timeout_ms)
 
     xSemaphoreGive(esp_tx_mutex);
     return 1;
-}
-
-void ESP8266_Clear(void)
-{
-    ESP8266_RxRestart();
 }
 
 _Bool ESP8266_SendCmd(char *cmd, char *res)
@@ -290,7 +290,7 @@ _Bool ESP8266_SendCmd(char *cmd, char *res)
     return 1;
 }
 
-_Bool ESP8266_SendData(unsigned char *data, unsigned short len)
+_Bool ESP8266_SendData(uint8_t *data, uint16_t len)
 {
     uint8_t recvBuf[768];
     uint8_t tmp[128];
@@ -406,7 +406,7 @@ _Bool ESP8266_SendData(unsigned char *data, unsigned short len)
     return 1;
 }
 
-unsigned char *ESP8266_GetIPD(unsigned short timeOut)
+uint8_t *ESP8266_GetIPD(uint16_t timeOut)
 {
     static uint8_t streamBuf[1024];
     static int streamLen = 0;

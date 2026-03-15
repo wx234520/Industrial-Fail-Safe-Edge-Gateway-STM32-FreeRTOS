@@ -8,6 +8,7 @@
 #include "semphr.h"
 #include "esp8266.h"
 #include "onenet.h"
+#include "watchdog_task.h"
 
 #define ESP8266_ONENET_INFO		"AT+CIPSTART=\"TCP\",\"mqtts.heclouds.com\",1883\r\n"
 #define ESP_RST_GPIO_Port        GPIOB
@@ -45,6 +46,7 @@ void MQTT_Connect(void)
 
     while(1)
     {
+        // Watchdog_Feed(WD_COMM);
         if(ESP8266_WaitIpReady(3000))
         {
             printf("WiFi lost, re-init...\r\n");
@@ -71,6 +73,7 @@ void MQTT_Connect(void)
     {
         if(ESP8266_WaitIpReady(3000))
         {
+            // Watchdog_Feed(WD_COMM);
             printf("WiFi lost before MQTT connect, re-init...\r\n");
             ESP8266_Init();
 
@@ -120,9 +123,12 @@ void CommTask(void *argument)
 
     CommTask_Init(); 
     MQTT_Connect(); 
+
+    Watchdog_Register(WD_COMM);
+    Watchdog_Feed(WD_COMM);
     
     for(;;) 
-    { 
+    {   
         if(xQueueReceive(CommQueue, &comm_data, pdMS_TO_TICKS(100)) == pdPASS) 
         { 
             // printf("Vol=%.3f Cur=%.3f Track=%d Sys=%d\r\n", 
@@ -152,6 +158,8 @@ void CommTask(void *argument)
         { 
             OneNet_RevPro(dataPtr); 
         } 
+
+        Watchdog_Feed(WD_COMM);
         
         vTaskDelay(pdMS_TO_TICKS(10)); 
     } 

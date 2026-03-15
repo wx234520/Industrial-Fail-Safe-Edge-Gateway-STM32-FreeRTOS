@@ -34,6 +34,7 @@
 #include "process_task.h"
 #include "display_task.h"
 #include "watchdog_task.h"
+#include "watchdog_service.h"
 #include "safety_task.h"
 #include "comm_task.h"
 #include "semphr.h"
@@ -96,6 +97,7 @@ void MX_FREERTOS_Init(void) {
   OLED_Init();
   LED_Init();
   Buzzer_Init();
+  Watchdog_Init();
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */

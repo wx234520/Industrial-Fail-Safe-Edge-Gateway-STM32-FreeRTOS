@@ -42,14 +42,4 @@ typedef struct {
     float hysteresis;              // 迟滞宽度 (V 或 A)，建议 0.5~2.0
 } alarm_threshold_t;
 
-typedef enum
-{
-    WD_SENSOR = 0,
-    WD_PROCESS,
-    WD_SAFETY,
-    WD_DISPLAY,
-    WD_TASK_MAX
-
-}wd_task_id_t;
-
 #endif /* TYPEDEFS_H_ */

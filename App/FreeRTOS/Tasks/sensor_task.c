@@ -8,6 +8,9 @@ void SensorTask(void *argument)
 {
     ADC_Start();
 
+    Watchdog_Register(WD_SENSOR);
+    Watchdog_Feed(WD_SENSOR);
+
     for(;;)
     {
         sensor_update();

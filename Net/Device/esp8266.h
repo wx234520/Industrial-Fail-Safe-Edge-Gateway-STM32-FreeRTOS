@@ -8,9 +8,9 @@ _Bool ESP8266_SendCmd(char *cmd, char *res);
 
 _Bool ESP8266_WaitIpReady(uint32_t timeout_ms);
 
-_Bool ESP8266_SendData(unsigned char *data, unsigned short len);
+_Bool ESP8266_SendData(uint8_t *data, uint16_t len);
 
-unsigned char *ESP8266_GetIPD(unsigned short timeOut);
+uint8_t *ESP8266_GetIPD(uint16_t timeOut);
 
 void ESP8266_Clear(void);
 

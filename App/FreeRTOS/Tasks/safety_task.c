@@ -15,6 +15,9 @@ void SafetyTask(void *argument)
     uint32_t heartbeat_counter = 0;
     TickType_t last_heartbeat = xTaskGetTickCount();
 
+    Watchdog_Register(WD_SAFETY);
+    Watchdog_Feed(WD_SAFETY);
+
     for(;;)
     {
         if(xQueueReceive(SafeQueue, &safety_data, pdMS_TO_TICKS(100)) == pdPASS)

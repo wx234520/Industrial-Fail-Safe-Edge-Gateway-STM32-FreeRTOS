@@ -12,6 +12,10 @@ extern QueueHandle_t DisplayQueue;
 
 void ProcessTask(void *argument)
 {
+
+    Watchdog_Register(WD_PROCESS);
+    Watchdog_Feed(WD_PROCESS);
+
     for(;;)
     {
         g_process_data.voltage = g_sensor.voltage;
