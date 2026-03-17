@@ -1,9 +1,6 @@
 #include "MqttKit.h"
-
-//C��
 #include <string.h>
 #include <stdio.h>
-
 
 #define CMD_TOPIC_PREFIX		"$creq"
 
@@ -799,17 +796,7 @@ uint8 MQTT_PacketUnSubscribe(uint16 pkt_id, const int8 *topics[], uint8 topics_c
 
 }
 
-//==========================================================
-//	�������ƣ�	MQTT_UnPacketUnSubscribe
-//
-//	�������ܣ�	UnSubscribe�Ļظ���Ϣ���
-//
-//	��ڲ�����	rev_data�����յ�����Ϣ
-//
-//	���ز�����	0-�ɹ�		����-ʧ��
-//
-//	˵����		
-//==========================================================
+
 uint1 MQTT_UnPacketUnSubscribe(uint8 *rev_data)
 {
 	
@@ -824,24 +811,7 @@ uint1 MQTT_UnPacketUnSubscribe(uint8 *rev_data)
 
 }
 
-//==========================================================
-//	�������ƣ�	MQTT_PacketPublish
-//
-//	�������ܣ�	Pulish��Ϣ���
-//
-//	��ڲ�����	pkt_id��pkt_id
-//				topic��������topic
-//				payload����Ϣ��
-//				payload_len����Ϣ�峤��
-//				qos���ط�����
-//				retain��������Ϣ����
-//				own��
-//				mqttPacket����ָ��
-//
-//	���ز�����	0-�ɹ�		����-ʧ��
-//
-//	˵����		
-//==========================================================
+
 uint8 MQTT_PacketPublish(uint16 pkt_id, const int8 *topic,
 						const int8 *payload, uint32 payload_len,
 						enum MqttQosLevel qos, int32 retain, int32 own,

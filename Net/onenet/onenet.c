@@ -1,35 +1,20 @@
-//单片机头文件
 #include "main.h"
 #include "FreeRTOS.h"
 #include "task.h"
-
-//网络设备
 #include "esp8266.h"
-
-//协议文件
 #include "onenet.h"
 #include "mqttkit.h"
-
-//算法
 #include "base64.h"
 #include "hmac_sha1.h"
-
-//硬件驱动
 #include "usart.h"
 #include "typedefs.h"
 #include "safety_service.h"
-
-//C库
 #include <string.h>
 #include <stdio.h>
-
-
 #include "cJSON.h"
 
 #define PROID			"Y6n1JN3291"
-
 #define ACCESS_KEY		"dVZ5bXRtdUJ2RnV5elJtUFlWRnBiMXpiSHBXUERUcTY="
-
 #define DEVICE_NAME		"d1"
 
 
@@ -609,146 +594,6 @@ static int OneNet_GetNumberFromParam(cJSON *params, const char *key, float *out_
 
     return -1;
 }
-
-// static void OneNet_ParseThresholdParams(cJSON *params)
-// {
-//     cJSON *item = NULL;
-//     cJSON *value = NULL;
-
-//     alarm_threshold_t threshold;
-//     uint8_t threshold_changed = 0;
-
-//     if(params == NULL)
-//         return;
-
-//     SafetyService_GetThreshold(&threshold);
-
-//     item = cJSON_GetObjectItem(params, "VolLowWarn");
-//     if(item)
-//     {
-//         value = cJSON_GetObjectItem(item, "value");
-//         if(value && value->type == cJSON_Number)
-//         {
-//             threshold.voltage_low_warning = (float)value->valuedouble;
-//             threshold_changed = 1;
-//             printf("Set VolLowWarn = %.3f\r\n", threshold.voltage_low_warning);
-//         }
-//     }
-
-//     item = cJSON_GetObjectItem(params, "VolHighWarn");
-//     if(item)
-//     {
-//         value = cJSON_GetObjectItem(item, "value");
-//         if(value && value->type == cJSON_Number)
-//         {
-//             threshold.voltage_high_warning = (float)value->valuedouble;
-//             threshold_changed = 1;
-//             printf("Set VolHighWarn = %.3f\r\n", threshold.voltage_high_warning);
-//         }
-//     }
-
-//     item = cJSON_GetObjectItem(params, "CurHighWarn");
-//     if(item)
-//     {
-//         value = cJSON_GetObjectItem(item, "value");
-//         if(value && value->type == cJSON_Number)
-//         {
-//             threshold.current_high_warning = (float)value->valuedouble;
-//             threshold_changed = 1;
-//             printf("Set CurHighWarn = %.3f\r\n", threshold.current_high_warning);
-//         }
-//     }
-
-//     item = cJSON_GetObjectItem(params, "TempHighWarn");
-//     if(item)
-//     {
-//         value = cJSON_GetObjectItem(item, "value");
-//         if(value && value->type == cJSON_Number)
-//         {
-//             threshold.temp_high_warning = (float)value->valuedouble;
-//             threshold_changed = 1;
-//             printf("Set TempHighWarn = %d\r\n", threshold.temp_high_warning);
-//         }
-//     }
-
-//     item = cJSON_GetObjectItem(params, "HumiLowWarn");
-//     if(item)
-//     {
-//         value = cJSON_GetObjectItem(item, "value");
-//         if(value && value->type == cJSON_Number)
-//         {
-//             threshold.humi_low_warning = (float)value->valuedouble;
-//             threshold_changed = 1;
-//             printf("Set HumiLowWarn = %d\r\n", threshold.humi_low_warning);
-//         }
-//     }
-
-//     item = cJSON_GetObjectItem(params, "HumiHighWarn");
-//     if(item)
-//     {
-//         value = cJSON_GetObjectItem(item, "value");
-//         if(value && value->type == cJSON_Number)
-//         {
-//             threshold.humi_high_warning = (float)value->valuedouble;
-//             threshold_changed = 1;
-//             printf("Set HumiHighWarn = %d\r\n", threshold.humi_high_warning);
-//         }
-//     }
-
-//     item = cJSON_GetObjectItem(params, "VolHyst");
-//     if(item)
-//     {
-//         value = cJSON_GetObjectItem(item, "value");
-//         if(value && value->type == cJSON_Number)
-//         {
-//             threshold.vol_hysteresis = (float)value->valuedouble;
-//             threshold_changed = 1;
-//             printf("Set VolHyst = %.2f\r\n", threshold.vol_hysteresis);
-//         }
-//     }
-
-//     item = cJSON_GetObjectItem(params, "CurHyst");
-//     if(item)
-//     {
-//         value = cJSON_GetObjectItem(item, "value");
-//         if(value && value->type == cJSON_Number)
-//         {
-//             threshold.cur_hysteresis = (float)value->valuedouble;
-//             threshold_changed = 1;
-//             printf("Set CurHyst = %.2f\r\n", threshold.cur_hysteresis);
-//         }
-//     }
-
-//     item = cJSON_GetObjectItem(params, "TempHyst");
-//     if(item)
-//     {
-//         value = cJSON_GetObjectItem(item, "value");
-//         if(value && value->type == cJSON_Number)
-//         {
-//             threshold.temp_hysteresis = (float)value->valuedouble;
-//             threshold_changed = 1;
-//             printf("Set TempHyst = %d\r\n", threshold.temp_hysteresis);
-//         }
-//     }
-
-//     item = cJSON_GetObjectItem(params, "HumiHyst");
-//     if(item)
-//     {
-//         value = cJSON_GetObjectItem(item, "value");
-//         if(value && value->type == cJSON_Number)
-//         {
-//             threshold.humi_hysteresis = (float)value->valuedouble;
-//             threshold_changed = 1;
-//             printf("Set HumiHyst = %d\r\n", threshold.humi_hysteresis);
-//         }
-//     }
-
-//     if(threshold_changed)
-//     {
-//         SafetyService_SetThreshold(&threshold);
-//         printf("Threshold updated from cloud\r\n");
-//     }
-// }
 
 static void OneNet_ParseThresholdParams(cJSON *params)
 {

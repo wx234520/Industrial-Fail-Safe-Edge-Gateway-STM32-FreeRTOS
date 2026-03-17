@@ -1191,16 +1191,6 @@
               <FilePath>..\Drivers\MCU-F103\driver_adc.h</FilePath>
             </File>
             <File>
-              <FileName>driver_led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\App\FreeRTOS\Tasks\driver_led.c</FilePath>
-            </File>
-            <File>
-              <FileName>driver_led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\App\FreeRTOS\Tasks\driver_led.h</FilePath>
-            </File>
-            <File>
               <FileName>driver_buzzer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\MCU-F103\driver_buzzer.c</FilePath>
@@ -1229,6 +1219,16 @@
               <FileName>driver_timer.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Drivers\MCU-F103\driver_timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>driver_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\MCU-F103\driver_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>driver_led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Drivers\MCU-F103\driver_led.h</FilePath>
             </File>
           </Files>
         </Group>

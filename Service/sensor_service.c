@@ -46,7 +46,6 @@ void sensor_update(void)
     TickType_t now;
     int hum, temp;
 
-    /* 1. 高频更新 ADC 数据 */
     g_sensor.raw_light = ADC_GetRaw(2); // Assuming light sensor is connected to channel 2
     g_sensor.filtered_light = light_filter(g_sensor.raw_light);
 
@@ -54,14 +53,9 @@ void sensor_update(void)
     g_sensor.current = ADC_GetRaw(1) * 5.0f / 4095.0f; // Assuming a 12-bit ADC and a reference voltage of 3.3V
     g_sensor.track_occupied = Sensor_IsTrackOccupied(&g_sensor); // Assuming a 12-bit ADC and a reference voltage of 3.3V
 
-    /* 2. 低频更新 DHT11，每 2 秒一次 */
     now = xTaskGetTickCount();
     if((now - last_dht_tick) >= pdMS_TO_TICKS(2000))
     {
-        /*
-         * DHT11 时序敏感，建议避免任务切换干扰
-         * 这里用挂起调度器的方式即可
-         */
         vTaskSuspendAll();
         if(DHT11_Read(&hum, &temp) == 0)
         {
